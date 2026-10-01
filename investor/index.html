@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#004d3f">
+<meta name="description" content="Our Circle: an investor sign-up page rebuilt as a portfolio project by Wallace Adeleye. Demo only: nothing you enter is sent or stored.">
+<title>Our Circle Investor Sign-up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: the original Mailchimp sign-up (deep green field, gold mark, one centred card),
+   followed by what a subscriber receives and how the funnel fits together. Single committed look. */
+:root{
+  color-scheme:dark;
+  --green:#004d3f; --green-2:#00382e; --green-3:#0d5c4d;
+  --gold:#E3B95A; --gold-2:#F2D48E;
+  --paper:#FFFFFF; --ink:#16231f; --ink-2:#4b5a55; --line:#d9e2df;
+  --font:"Montserrat","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--green);color:#fff;font:400 16px/1.6 var(--font)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+[hidden]{display:none!important}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px}
+
+.demo{background:#000;color:var(--gold-2);font:600 13px/1.4 var(--font);padding-block:10px;padding-inline:16px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;align-items:center}
+.demo a{color:#fff;text-decoration:none;font-weight:700}
+.demo a:hover{text-decoration:underline}
+
+.hero{padding-block:48px 56px;display:grid;justify-items:center;text-align:center;gap:18px}
+.mark{width:104px;height:104px;border:3px solid var(--gold);display:grid;place-items:center}
+.mark svg{width:58px;height:58px;fill:none;stroke:var(--gold);stroke-width:3.2;stroke-linecap:round}
+h1{margin:0;font:800 clamp(34px,6vw,52px)/1.05 var(--font);letter-spacing:.01em}
+.lede{margin:0;font:600 clamp(19px,2.6vw,24px)/1.3 var(--font);color:var(--gold-2);text-wrap:balance}
+.sub{margin:0;max-width:44ch;color:#d6e6e1}
+
+.card{width:min(520px,100%);background:var(--paper);color:var(--ink);padding:26px 24px 24px;text-align:left;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.card h2{margin:0 0 4px;font:700 20px/1.25 var(--font)}
+.card .hint{margin:0 0 18px;color:var(--ink-2);font-size:14px}
+form{display:grid;gap:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:grid;gap:6px;font:600 13.5px/1.2 var(--font);color:var(--ink)}
+label small{font-weight:500;color:var(--ink-2)}
+input{font:500 16px/1.2 var(--font);color:var(--ink);padding:12px 12px;border:1.5px solid var(--line);border-radius:4px;background:#fff;width:100%;min-width:0}
+input:focus{border-color:var(--green-3);outline:none;box-shadow:0 0 0 3px rgba(0,77,63,.18)}
+input[aria-invalid="true"]{border-color:#b3261e}
+.err{color:#b3261e;font-size:13px;min-height:1em;margin:-6px 0 0}
+.btn{font:700 16px/1 var(--font);letter-spacing:.04em;background:var(--green);color:#fff;border:0;padding:16px 20px;cursor:pointer;border-radius:4px}
+.btn:hover{background:var(--green-3)}
+.fine{margin:4px 0 0;color:var(--ink-2);font-size:12.5px}
+
+/* step 2: the welcome and what lands each week */
+.done h2{font:800 22px/1.2 var(--font)}
+.mail{border:1px solid var(--line);margin-top:14px}
+.mail-head{background:#f3f6f5;padding:12px 14px;font-size:13px;color:var(--ink-2);display:grid;gap:2px;border-bottom:1px solid var(--line)}
+.mail-head b{color:var(--ink)}
+.mail-body{padding:16px 14px;display:grid;gap:12px}
+.flag{justify-self:start;font:700 11px/1 var(--font);letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:6px 8px}
+.deal{border:1px solid var(--line);padding:12px 14px;display:grid;gap:6px}
+.deal h3{margin:0;font:700 15.5px/1.3 var(--font)}
+.deal .tag{font:600 12px/1 var(--font);color:var(--green-3);letter-spacing:.06em;text-transform:uppercase}
+.deal dl{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;font-size:13.5px}
+.deal dt{color:var(--ink-2)}
+.deal dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.deal .pair{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dotted var(--line);padding-block:3px}
+.again{background:none;border:0;color:var(--green-3);font:700 14px var(--font);text-decoration:underline;cursor:pointer;padding:0;justify-self:start}
+
+/* how it works */
+.how{background:var(--green-2);padding-block:56px}
+.how h2{margin:0 0 6px;font:800 clamp(24px,3.6vw,34px)/1.15 var(--font)}
+.how .intro{margin:0 0 26px;color:#cfe0db;max-width:62ch}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:s}
+.flow li{background:var(--green);border-top:3px solid var(--gold);padding:16px 14px;display:grid;gap:6px;align-content:start;counter-increment:s;position:relative}
+.flow li::before{content:"0" counter(s);font:800 13px/1 var(--font);color:var(--gold);letter-spacing:.1em}
+.flow b{font:700 15.5px/1.3 var(--font)}
+.flow span{font-size:14px;color:#d6e6e1;line-height:1.5}
+.notes{margin-top:26px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.notes div{border:1px solid var(--green-3);padding:14px;font-size:14px;color:#d6e6e1}
+.notes b{display:block;color:#fff;font-weight:700;margin-bottom:4px}
+footer{padding-block:22px 34px;color:#a9c4bc;font-size:13px;text-align:center}
+
+@media (max-width:860px){ .flow{grid-template-columns:1fr 1fr} .notes{grid-template-columns:1fr} }
+@media (max-width:520px){ .row{grid-template-columns:1fr} .flow{grid-template-columns:1fr} .card{padding:22px 18px} .deal dl{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<div class="demo"><a href="../">&larr; Wallace Adeleye &middot; Portfolio</a><span>Portfolio project, rebuilt from a live Mailchimp page. Nothing you type is sent or stored.</span></div>
+
+<main>
+  <section class="hero wrap">
+    <div class="mark" aria-hidden="true"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="20"/><path d="M30 10v40M10 30h40"/></svg></div>
+    <h1>Our Circle</h1>
+    <p class="lede">Connect for deals that best suit you.</p>
+    <p class="sub">Look out for our deals across London and the Home Counties, every week.</p>
+
+    <div class="card">
+      <div id="step1">
+        <h2>Join the list</h2>
+        <p class="hint">Only your email is required.</p>
+        <form id="form" novalidate>
+          <div class="row">
+            <label for="fname">First name <small>Optional</small><input id="fname" name="fname" type="text" autocomplete="off"></label>
+            <label for="lname">Last name <small>Optional</small><input id="lname" name="lname" type="text" autocomplete="off"></label>
+          </div>
+          <label for="email">Email address<input id="email" name="email" type="email" inputmode="email" autocomplete="off" required aria-describedby="emailErr"></label>
+          <p class="err" id="emailErr" role="alert"></p>
+          <label for="phone">Phone number <small>Optional</small><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="off"></label>
+          <button class="btn" type="submit">Connect</button>
+          <p class="fine">Demo only: this rebuilt form doesn&rsquo;t send or keep anything.</p>
+        </form>
+      </div>
+
+      <div id="step2" class="done" hidden>
+        <h2 id="welcome" tabindex="-1">You&rsquo;re in.</h2>
+        <p class="hint">On the live page, Mailchimp adds you to the list with your name, email and phone. Here&rsquo;s the kind of email that lands each week:</p>
+        <div class="mail">
+          <div class="mail-head"><span><b>From:</b> Our Circle</span><span><b>Subject:</b> This week: 3 new deals in London and the Home Counties</span></div>
+          <div class="mail-body">
+            <span class="flag">Example figures, not real listings</span>
+            <article class="deal">
+              <span class="tag">Rent to serviced accommodation</span>
+              <h3>3-bed house, Walthamstow E17</h3>
+              <dl>
+                <div class="pair"><dt>Rent</dt><dd>&pound;2,100 pcm</dd></div>
+                <div class="pair"><dt>Est. net profit</dt><dd>&pound;850 a month</dd></div>
+                <div class="pair"><dt>Setup cost</dt><dd>&pound;9,800</dd></div>
+                <div class="pair"><dt>Payback</dt><dd>about 12 months</dd></div>
+              </dl>
+            </article>
+            <article class="deal">
+              <span class="tag">Serviced accommodation</span>
+              <h3>2-bed flat, Watford</h3>
+              <dl>
+                <div class="pair"><dt>Rent</dt><dd>&pound;1,450 pcm</dd></div>
+                <div class="pair"><dt>Est. net profit</dt><dd>&pound;620 a month</dd></div>
+                <div class="pair"><dt>Setup cost</dt><dd>&pound;7,400</dd></div>
+                <div class="pair"><dt>Payback</dt><dd>about 12 months</dd></div>
+              </dl>
+            </article>
+            <article class="deal">
+              <span class="tag">HMO, buy to let</span>
+              <h3>4-bed house, Luton</h3>
+              <dl>
+                <div class="pair"><dt>Price</dt><dd>&pound;315,000</dd></div>
+                <div class="pair"><dt>Rooms</dt><dd>5</dd></div>
+                <div class="pair"><dt>Gross rent</dt><dd>&pound;2,470 a month</dd></div>
+                <div class="pair"><dt>Gross yield</dt><dd>9.4%</dd></div>
+              </dl>
+            </article>
+            <p class="fine">Reply to any deal to ask for the full pack.</p>
+          </div>
+        </div>
+        <p></p>
+        <button class="again" type="button" id="again">Back to the form</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" aria-labelledby="h-how">
+    <div class="wrap">
+      <h2 id="h-how">How the funnel works</h2>
+      <p class="intro">Every channel points to one page, and the page feeds one list. Each week&rsquo;s deals go to investors who asked for them, so a deal never starts from zero.</p>
+      <ol class="flow">
+        <li><b>Social</b><span>Instagram, Facebook and WhatsApp posts all link to the same page.</span></li>
+        <li><b>This page</b><span>One promise, four fields, only email required. Less to fill in, more sign-ups.</span></li>
+        <li><b>One list</b><span>A Mailchimp audience with name, email and phone, so contacts can be filtered later.</span></li>
+        <li><b>Weekly email</b><span>New deals across London and the Home Counties, each with the key numbers.</span></li>
+        <li><b>Call</b><span>Replies turn into calls, and calls into reservations.</span></li>
+      </ol>
+      <div class="notes">
+        <div><b>Why only email is required</b>Every extra required field costs sign-ups. Name and phone are optional, and keen investors fill them in anyway.</div>
+        <div><b>Why one page for every channel</b>One link to share, one place to change the offer, and one list to measure.</div>
+        <div><b>What to measure</b>Sign-up rate from each channel, the weekly email&rsquo;s open and reply rates, and replies that become calls.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Rebuilt by Wallace Adeleye as a portfolio project. The original was built in Mailchimp. Brand, links and contact details removed.</footer>
+
+<script>
+(function(){
+  var form = document.getElementById('form'), email = document.getElementById('email'), err = document.getElementById('emailErr');
+  var s1 = document.getElementById('step1'), s2 = document.getElementById('step2'), welcome = document.getElementById('welcome');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = email.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){
+      email.setAttribute('aria-invalid', 'true');
+      err.textContent = v ? 'That email doesn’t look right. Check it and try again.' : 'Enter your email address to join.';
+      email.focus();
+      return;
+    }
+    email.removeAttribute('aria-invalid'); err.textContent = '';
+    var first = document.getElementById('fname').value.trim();
+    welcome.textContent = first ? 'You’re in, ' + first + '.' : 'You’re in.';
+    form.reset();
+    s1.hidden = true; s2.hidden = false; welcome.focus();
+  });
+  email.addEventListener('input', function(){ if (email.getAttribute('aria-invalid')){ email.removeAttribute('aria-invalid'); err.textContent = ''; } });
+  document.getElementById('again').addEventListener('click', function(){ s2.hidden = true; s1.hidden = false; document.getElementById('fname').focus(); });
+})();
+</script>
+</body>
+</html>

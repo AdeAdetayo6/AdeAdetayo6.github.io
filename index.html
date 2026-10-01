@@ -98,6 +98,7 @@ a.btn{display:inline-block;text-decoration:none}
 .p-rust a.btn{background:var(--gold);color:var(--night)}
 .cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .cta span{font:400 20px/1.2 var(--pixel);letter-spacing:.04em;color:var(--on-dark-2)}
+.p-cream .cta span{color:var(--ink-2)}
 
 /* title page: upright, centred, spaced */
 .cover{text-align:center;padding-block:88px 80px}
@@ -155,20 +156,122 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
   .name{letter-spacing:.1em;padding-left:.1em}
 }
 @media (prefers-reduced-motion:reduce){.cursor{animation:none} html{scroll-behavior:auto}}
+/* v4: sticky strip with live clock, language and listen; side rail for jumping between cases */
+.tt{position:sticky;top:0;z-index:30;align-items:center}
+.tt .left,.tt .right{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap}
+.tt .right{margin-left:auto}
+.tt button,.tt select{font:400 21px/1 var(--pixel);letter-spacing:.04em;color:var(--gold);background:#000;border:1px solid #5a4a1c;padding:3px 8px;cursor:pointer}
+.tt button:hover,.tt select:hover{border-color:var(--gold)}
+.tt select{max-width:170px;color:var(--cream)}
+.tt select option,.tt select optgroup{font:15px/1.3 system-ui,sans-serif;color:#111;background:#fff}
+.tt .colon{animation:blink 1s steps(1) infinite}
+.tt .trlink{color:#7FD1C8;text-decoration:underline}
+.tt .listen[aria-pressed="true"]{background:var(--gold);color:#000}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.panel{scroll-margin-top:42px}
+
+/* side rail: hidden until the toggle is pressed, slides over the page */
+.side{position:fixed;top:0;bottom:0;left:0;width:264px;max-width:86vw;z-index:40;background:var(--cream);color:var(--ink);border-right:1px solid #CFC5AC;display:flex;flex-direction:column;gap:2px;padding:18px 12px calc(84px + env(safe-area-inset-bottom,0px));overflow-y:auto;transform:translateX(-104%);transition:transform .26s cubic-bezier(.2,.8,.2,1);box-shadow:16px 0 48px rgba(0,0,0,.28);visibility:hidden}
+.side.open{transform:none;visibility:visible}
+.side-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 14px}
+.side-brand .mono{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--cream);font:850 13.5px/1 var(--display);letter-spacing:.04em;flex:none}
+.side-brand b{font:850 15.5px/1.15 var(--display);letter-spacing:.01em}
+.side-brand small{display:block;font:400 16px/1 var(--pixel);color:var(--rust-ink);letter-spacing:.04em;margin-top:3px}
+.side a.item{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 10px;border-radius:10px;text-decoration:none;font:600 14px/1.2 var(--display);color:var(--ink)}
+.side a.item:hover{background:var(--cream-2)}
+.side a.item[aria-current="true"]{background:var(--cream-2);font-weight:800}
+.side a.item .num{font:400 17px/1 var(--pixel);color:var(--rust-ink);letter-spacing:.04em}
+.side a.item.reading .num{color:var(--ink);background:var(--gold);padding:1px 4px}
+.side svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.side-pill{margin:12px 4px 4px;display:flex;align-items:center;justify-content:center;gap:9px;border:1.5px solid var(--ink);border-radius:999px;padding:11px 16px;background:transparent;color:var(--ink);font:700 14px/1 var(--display);cursor:pointer}
+.side-pill:hover{background:var(--cream-2)}
+.side-pill[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.side-row{display:flex;gap:8px;margin:0 4px}
+.side-row button{flex:1;border:1.5px solid var(--ink);border-radius:999px;padding:8px 10px;background:transparent;color:var(--ink);font:700 12.5px/1 var(--display);cursor:pointer}
+.side-opts{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:8px;margin:8px 4px 0}
+.side-opts label{display:grid;gap:4px;font:700 10.5px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);min-width:0}
+.side-opts select{font:500 13px/1.2 var(--display);color:var(--ink);background:var(--cream-2);border:1px solid #CFC5AC;border-radius:8px;padding:7px 6px;min-width:0;width:100%}
+.side-status{min-height:1.3em;margin:6px 8px 0;font:400 16px/1.2 var(--pixel);color:var(--ink-2);letter-spacing:.03em}
+.side-label{margin:16px 10px 4px;font:700 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+.side a.quick{padding:7px 10px;border-radius:10px;font:600 13.5px/1.3 var(--display);text-decoration:none;color:var(--ink)}
+.side a.quick:hover{background:var(--cream-2)}
+.scrim{position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.4);border:0;padding:0}
+.panel.reading .count{background:var(--gold);color:#000;opacity:1;padding:2px 6px}
+
+/* the toggle: a teletext-gold button that morphs from three bars into an X */
+.fab{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;display:flex;align-items:center;gap:10px;height:52px;padding:0 18px 0 15px;border-radius:999px;border:2px solid var(--gold);background:#000;color:var(--gold);font:400 21px/1 var(--pixel);letter-spacing:.06em;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:transform .15s ease}
+.fab:hover{transform:translateY(-2px)}
+.fab .bars{position:relative;width:20px;height:14px;flex:none}
+.fab .bars i{position:absolute;left:0;width:20px;height:2px;background:currentColor;transition:transform .25s ease,opacity .2s ease,top .25s ease}
+.fab .bars i:nth-child(1){top:0}.fab .bars i:nth-child(2){top:6px}.fab .bars i:nth-child(3){top:12px}
+.fab[aria-expanded="true"] .bars i:nth-child(1){top:6px;transform:rotate(45deg)}
+.fab[aria-expanded="true"] .bars i:nth-child(2){opacity:0;transform:scaleX(0)}
+.fab[aria-expanded="true"] .bars i:nth-child(3){top:6px;transform:rotate(-45deg)}
+.fab .now{color:var(--cream);max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .3s ease}
+.fab.playing .now{max-width:160px}
+.fab .dot{width:8px;height:8px;border-radius:50%;background:#C9573F;display:none;animation:blink 1s steps(1) infinite}
+.fab.playing .dot{display:inline-block}
+
+@media (max-width:700px){ .tt .left span.pf{display:none} .tt{font-size:19px} .tt button,.tt select{font-size:19px} .tt select{max-width:120px} }
+@media (max-width:440px){ .tt .left span.p100{display:none} }
+@media (prefers-reduced-motion:reduce){.side,.fab,.fab .bars i,.fab .now{transition:none}.fab .dot{animation:none}}
+
+/* Google's translate bar stays hidden: the language menu above drives it */
+iframe.skiptranslate,.goog-te-banner-frame,#goog-gt-tt,.goog-te-balloon-frame,.VIpgJd-ZVi9od-ORHb-OEVmcd,.VIpgJd-ZVi9od-aZ2wEe-wOHMyf{display:none!important}
+body{top:0!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
+#gte{display:none}
 </style>
 </head>
 <body>
 
-<div class="tt" aria-hidden="true"><span>P100 ADELEYE</span><span>PORTFOLIO</span><span id="clock">THU 01 OCT</span></div>
+<nav class="side" id="side" aria-label="Portfolio sections">
+  <div class="side-brand"><span class="mono notranslate" aria-hidden="true">WA</span><span><b class="notranslate">Wallace Adeleye</b><small>P100 &middot; INDEX</small></span></div>
+  <a class="item" href="#top" data-sec="top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span><span class="num">01</span></a>
+  <a class="item" href="#ford" data-sec="ford"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M11 20V5M17 20v-7M3 20h18"/></svg><span>Ford, in numbers</span><span class="num">02</span></a>
+  <a class="item" href="#model" data-sec="model"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9.5h18M3 14.5h18M9 4v16"/></svg><span>The deal model</span><span class="num">03</span></a>
+  <a class="item" href="#try" data-sec="try"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Try it</span><span class="num">04</span></a>
+  <a class="item" href="#london" data-sec="london"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>London, ranked</span><span class="num">05</span></a>
+  <a class="item" href="#ops" data-sec="ops"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span>Run like a team</span><span class="num">06</span></a>
+  <a class="item" href="#health" data-sec="health"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>IT health check</span><span class="num">07</span></a>
+  <a class="item" href="#carnival" data-sec="carnival"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><span>Carnival map</span><span class="num">08</span></a>
+  <a class="item" href="#investor" data-sec="investor"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M16 6.5h5M18.5 4v5"/></svg><span>Investor sign-up</span><span class="num">09</span></a>
+  <a class="item" href="#how" data-sec="how"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 7.5l9 6 9-6"/></svg><span>How I work</span><span class="num">10</span></a>
+  <button class="side-pill" type="button" data-listen aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg><span class="lbl">Listen to this page</span></button>
+  <div class="side-opts">
+    <label>Voice<select id="vsel" class="notranslate"><option value="">Automatic</option></select></label>
+    <label>Speed<select id="rsel" class="notranslate"><option value="0.75">0.75&times;</option><option value="1" selected>1&times;</option><option value="1.25">1.25&times;</option><option value="1.5">1.5&times;</option><option value="2">2&times;</option></select></label>
+  </div>
+  <div class="side-row" id="lctl" hidden><button type="button" id="lstop">Stop</button><button type="button" id="lnext">Next case</button></div>
+  <div class="side-status" id="lstatus" aria-live="polite"></div>
+  <div class="side-label">Quick links</div>
+  <a class="quick" href="https://adeadetayo6.github.io/carnival/" target="_blank" rel="noopener">Open the Carnival map &#8599;</a>
+  <a class="quick" href="https://adeadetayo6.github.io/investor/" target="_blank" rel="noopener">Open the investor page &#8599;</a>
+  <a class="quick" href="#how">Email me</a>
+</nav>
+<button class="scrim" id="scrim" type="button" aria-label="Close contents" hidden></button>
+<button class="fab notranslate" id="menuBtn" type="button" aria-controls="side" aria-expanded="false" aria-label="Open the index"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="dot" aria-hidden="true"></span><span class="lbl">INDEX</span><span class="now" id="fabNow"></span></button>
+<div id="gte"></div>
 
-<section class="panel p-cream cover" aria-labelledby="h-cover">
-  <span class="count" aria-hidden="true">1 / 9</span>
+<div class="tt" id="tt">
+  <span class="left"><span class="p100 notranslate" aria-hidden="true">P100 ADELEYE</span><span class="pf" aria-hidden="true">PORTFOLIO</span></span>
+  <span class="right">
+    <span id="clock" class="notranslate" role="timer" aria-label="Current date and time">&nbsp;</span>
+    <label class="notranslate"><span class="sr">Language</span><select id="lang" class="notranslate"><optgroup label="Common"><option value="en">English</option><option value="es">Español · Spanish</option><option value="fr">Français · French</option><option value="de">Deutsch · German</option><option value="it">Italiano · Italian</option><option value="pt">Português · Portuguese</option><option value="pl">Polski · Polish</option><option value="nl">Nederlands · Dutch</option><option value="ar">العربية · Arabic</option><option value="hi">हिन्दी · Hindi</option><option value="ur">اردو · Urdu</option><option value="bn">বাংলা · Bengali</option><option value="zh-CN">简体中文 · Chinese (Simplified)</option><option value="ja">日本語 · Japanese</option><option value="ko">한국어 · Korean</option><option value="tr">Türkçe · Turkish</option><option value="ru">Русский · Russian</option></optgroup><optgroup label="All languages"><option value="af">Afrikaans</option><option value="sq">Shqip · Albanian</option><option value="am">አማርኛ · Amharic</option><option value="hy">Հայերեն · Armenian</option><option value="as">অসমীয়া · Assamese</option><option value="ay">Aymar aru · Aymara</option><option value="az">Azərbaycan · Azerbaijani</option><option value="bm">Bamanankan · Bambara</option><option value="eu">Euskara · Basque</option><option value="be">Беларуская · Belarusian</option><option value="bho">भोजपुरी · Bhojpuri</option><option value="bs">Bosanski · Bosnian</option><option value="bg">Български · Bulgarian</option><option value="ca">Català · Catalan</option><option value="ceb">Cebuano</option><option value="ny">Chichewa</option><option value="zh-TW">繁體中文 · Chinese (Traditional)</option><option value="co">Corsu · Corsican</option><option value="hr">Hrvatski · Croatian</option><option value="cs">Čeština · Czech</option><option value="da">Dansk · Danish</option><option value="dv">ދިވެހި · Dhivehi</option><option value="doi">डोगरी · Dogri</option><option value="eo">Esperanto</option><option value="et">Eesti · Estonian</option><option value="ee">Eʋegbe · Ewe</option><option value="tl">Filipino</option><option value="fi">Suomi · Finnish</option><option value="fy">Frysk · Frisian</option><option value="gl">Galego · Galician</option><option value="ka">ქართული · Georgian</option><option value="el">Ελληνικά · Greek</option><option value="gn">Avañeʼẽ · Guarani</option><option value="gu">ગુજરાતી · Gujarati</option><option value="ht">Kreyòl ayisyen · Haitian Creole</option><option value="ha">Hausa</option><option value="haw">ʻŌlelo Hawaiʻi · Hawaiian</option><option value="iw">עברית · Hebrew</option><option value="hmn">Hmoob · Hmong</option><option value="hu">Magyar · Hungarian</option><option value="is">Íslenska · Icelandic</option><option value="ig">Igbo</option><option value="ilo">Ilokano · Ilocano</option><option value="id">Bahasa Indonesia · Indonesian</option><option value="ga">Gaeilge · Irish</option><option value="jw">Basa Jawa · Javanese</option><option value="kn">ಕನ್ನಡ · Kannada</option><option value="kk">Қазақ · Kazakh</option><option value="km">ខ្មែរ · Khmer</option><option value="rw">Kinyarwanda</option><option value="gom">कोंकणी · Konkani</option><option value="kri">Krio</option><option value="ku">Kurdî · Kurdish (Kurmanji)</option><option value="ckb">کوردی · Kurdish (Sorani)</option><option value="ky">Кыргызча · Kyrgyz</option><option value="lo">ລາວ · Lao</option><option value="la">Latina · Latin</option><option value="lv">Latviešu · Latvian</option><option value="ln">Lingála · Lingala</option><option value="lt">Lietuvių · Lithuanian</option><option value="lg">Luganda</option><option value="lb">Lëtzebuergesch · Luxembourgish</option><option value="mk">Македонски · Macedonian</option><option value="mai">मैथिली · Maithili</option><option value="mg">Malagasy</option><option value="ms">Bahasa Melayu · Malay</option><option value="ml">മലയാളം · Malayalam</option><option value="mt">Malti · Maltese</option><option value="mi">Māori · Maori</option><option value="mr">मराठी · Marathi</option><option value="mni-Mtei">ꯃꯤꯇꯩꯂꯣꯟ · Meiteilon (Manipuri)</option><option value="lus">Mizo ṭawng · Mizo</option><option value="mn">Монгол · Mongolian</option><option value="my">မြန်မာ · Myanmar (Burmese)</option><option value="ne">नेपाली · Nepali</option><option value="no">Norsk · Norwegian</option><option value="or">ଓଡ଼ିଆ · Odia</option><option value="om">Afaan Oromoo · Oromo</option><option value="ps">پښتو · Pashto</option><option value="fa">فارسی · Persian</option><option value="pa">ਪੰਜਾਬੀ · Punjabi</option><option value="qu">Runa Simi · Quechua</option><option value="ro">Română · Romanian</option><option value="sm">Gagana Samoa · Samoan</option><option value="sa">संस्कृतम् · Sanskrit</option><option value="gd">Gàidhlig · Scots Gaelic</option><option value="nso">Sepedi</option><option value="sr">Српски · Serbian</option><option value="st">Sesotho</option><option value="sn">chiShona · Shona</option><option value="sd">سنڌي · Sindhi</option><option value="si">සිංහල · Sinhala</option><option value="sk">Slovenčina · Slovak</option><option value="sl">Slovenščina · Slovenian</option><option value="so">Soomaali · Somali</option><option value="su">Basa Sunda · Sundanese</option><option value="sw">Kiswahili · Swahili</option><option value="sv">Svenska · Swedish</option><option value="tg">Тоҷикӣ · Tajik</option><option value="ta">தமிழ் · Tamil</option><option value="tt">Татар · Tatar</option><option value="te">తెలుగు · Telugu</option><option value="th">ไทย · Thai</option><option value="ti">ትግርኛ · Tigrinya</option><option value="ts">Xitsonga · Tsonga</option><option value="tk">Türkmen · Turkmen</option><option value="ak">Twi · Twi (Akan)</option><option value="uk">Українська · Ukrainian</option><option value="ug">ئۇيغۇرچە · Uyghur</option><option value="uz">Oʻzbek · Uzbek</option><option value="vi">Tiếng Việt · Vietnamese</option><option value="cy">Cymraeg · Welsh</option><option value="xh">isiXhosa · Xhosa</option><option value="yi">ייִדיש · Yiddish</option><option value="yo">Yorùbá · Yoruba</option><option value="zu">isiZulu · Zulu</option></optgroup></select></label>
+    <a class="trlink notranslate" id="trlink" href="#" target="_blank" rel="noopener" hidden>OPEN &#8599;</a>
+    <button class="listen notranslate" type="button" data-listen aria-pressed="false"><span class="lbl">&#9654; LISTEN</span></button>
+  </span>
+</div>
+
+<section class="panel p-cream cover" id="top" aria-labelledby="h-cover">
+  <span class="count" aria-hidden="true">1 / 10</span>
   <div class="in">
     <div class="mark">P100 &middot; INDEX</div>
-    <h1 class="name" id="h-cover">Wallace<br>Adeleye</h1>
+    <h1 class="name notranslate" id="h-cover">Wallace<br>Adeleye</h1>
     <div class="rule" aria-hidden="true"></div>
     <p class="role">Business operations &middot; Analytics &middot; Automation</p>
-    <p class="prep">Five things I built. Two of them you can try for yourself.</p>
+    <p class="prep">Six things I built. Three of them you can try for yourself.</p>
     <ol class="index" aria-label="Contents">
       <li><a href="#ford"><span class="n">02</span><span class="t">Ford, in numbers</span><span class="d">Where it started</span></a></li>
       <li><a href="#model"><span class="n">03</span><span class="t">The deal model</span><span class="d">Financial modelling</span></a></li>
@@ -177,13 +280,14 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
       <li><a href="#ops"><span class="n">06</span><span class="t">Run like a team</span><span class="d">Operations</span></a></li>
       <li><a href="#health"><span class="n">07</span><span class="t">The IT health check</span><span class="d">Service design</span></a></li>
       <li><a href="#carnival"><span class="n">08</span><span class="t">Carnival sound map</span><span class="d">Offline by design</span></a></li>
-      <li><a href="#how"><span class="n">09</span><span class="t">How I work</span><span class="d">And how to reach me</span></a></li>
+      <li><a href="#investor"><span class="n">09</span><span class="t">Investor sign-up</span><span class="d">Marketing funnel</span></a></li>
+      <li><a href="#how"><span class="n">10</span><span class="t">How I work</span><span class="d">And how to reach me</span></a></li>
     </ol>
   </div>
 </section>
 
 <section class="panel p-night" id="ford" aria-labelledby="h-ford">
-  <span class="count" aria-hidden="true">2 / 9</span>
+  <span class="count" aria-hidden="true">2 / 10</span>
   <div class="in">
     <div class="kicker">Background</div>
     <h2 id="h-ford">Ford Dunton.<br><span class="hl">Two years in.</span></h2>
@@ -197,7 +301,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-rust" id="model" aria-labelledby="h-c1">
-  <span class="count" aria-hidden="true">3 / 9</span>
+  <span class="count" aria-hidden="true">3 / 10</span>
   <div class="in">
     <div class="kicker">Case 1 &middot; Financial modelling</div>
     <h2 id="h-c1">A deal model that became <span class="hl">a product.</span></h2>
@@ -216,7 +320,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-olive" id="try" aria-labelledby="h-try">
-  <span class="count" aria-hidden="true">4 / 9</span>
+  <span class="count" aria-hidden="true">4 / 10</span>
   <div class="in">
     <div class="kicker">Try the model</div>
     <p class="quote" id="h-try">&ldquo;Change two numbers and the whole P&amp;L answers back.&rdquo;</p>
@@ -237,7 +341,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-night" id="london" aria-labelledby="h-c2">
-  <span class="count" aria-hidden="true">5 / 9</span>
+  <span class="count" aria-hidden="true">5 / 10</span>
   <div class="in">
     <div class="kicker">Case 2 &middot; Data analysis</div>
     <h2 id="h-c2">London, ranked.<br><span class="hl">Before looking.</span></h2>
@@ -256,7 +360,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-cream" id="ops" aria-labelledby="h-c3">
-  <span class="count" aria-hidden="true">6 / 9</span>
+  <span class="count" aria-hidden="true">6 / 10</span>
   <div class="in">
     <div class="kicker">Case 3 &middot; Operations and automation</div>
     <h2 id="h-c3">One person.<br><span class="hl">Run like a team.</span></h2>
@@ -292,7 +396,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-olive" id="health" aria-labelledby="h-c4">
-  <span class="count" aria-hidden="true">7 / 9</span>
+  <span class="count" aria-hidden="true">7 / 10</span>
   <div class="in">
     <div class="kicker">Case 4 &middot; Service design</div>
     <h2 id="h-c4">An IT health check<br><span class="hl">for small organisations.</span></h2>
@@ -310,7 +414,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-rust" id="carnival" aria-labelledby="h-c5">
-  <span class="count" aria-hidden="true">8 / 9</span>
+  <span class="count" aria-hidden="true">8 / 10</span>
   <div class="in">
     <div class="kicker">Case 5 &middot; Offline by design</div>
     <h2 id="h-c5">A sound-system map<br><span class="hl">for a festival with no signal.</span></h2>
@@ -328,17 +432,36 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
   </div>
 </section>
 
+<section class="panel p-cream" id="investor" aria-labelledby="h-c6">
+  <span class="count" aria-hidden="true">9 / 10</span>
+  <div class="in">
+    <div class="kicker">Case 6 &middot; Marketing funnel</div>
+    <h2 id="h-c6">A sign-up page<br><span class="hl">that builds a buyers list.</span></h2>
+    <div class="stats">
+      <div class="stat"><b>4</b><span>Form fields, only email required</span></div>
+      <div class="stat"><b>1</b><span>List that every channel feeds</span></div>
+      <div class="stat g"><b>WEEKLY</b><span>Deal email to the list</span></div>
+    </div>
+    <div class="cards">
+      <div class="card"><h3>Problem</h3><p>Sourced deals need buyers who are ready to move. Investor contacts were scattered across DMs, calls and notes, so every new deal started from zero.</p></div>
+      <div class="card"><h3>What I built</h3><ul><li>A Mailchimp landing page and audience: name, email and phone, with only email required</li><li>Instagram, Facebook and WhatsApp all pointing to the same page</li><li>A weekly email of deals across London and the Home Counties</li></ul></div>
+      <div class="card"><h3>Result</h3><p>One list of investors, so each week&rsquo;s deals go to people who asked for them.</p><p class="hit">Buyers lined up before the deal lands.</p></div>
+    </div>
+    <div class="cta"><a class="btn" href="https://adeadetayo6.github.io/investor/" target="_blank" rel="noopener">See the page</a><span>A rebuilt demo: nothing you type is sent</span></div>
+  </div>
+</section>
+
 <section class="panel p-night" id="how" aria-labelledby="h-how">
-  <span class="count" aria-hidden="true">9 / 9</span>
+  <span class="count" aria-hidden="true">10 / 10</span>
   <div class="in">
     <div class="kicker">How I work</div>
     <p class="quote" id="h-how">&ldquo;I design the system, set the rules and check the numbers.&rdquo;</p>
     <p class="body">I work backwards from the outcome. Once I know what the project needs, I build the specific tool that moves it forward: a model, a script, a dashboard. I test it against known numbers, then hand it over ready to run. Efficient, direct, and no wasted steps.</p>
-    <div class="tools" aria-label="Tools">
+    <div class="tools notranslate" aria-label="Tools">
       <span>EXCEL</span><span>VBA</span><span>POWER BI</span><span>PYTHON</span><span>PANDAS</span><span>REST APIS</span><span>GMAIL AUTOMATION</span><span>AI AGENTS</span>
     </div>
     <div class="contact">
-      <span class="email" id="em2">adetayoadeleye6@gmail.com</span>
+      <span class="email notranslate" id="em2">adetayoadeleye6@gmail.com</span>
       <button class="btn" type="button" id="copy2">Copy email</button>
     </div>
   </div>
@@ -358,9 +481,6 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
     });
   }
   copier('copy2','em2');
-  var d=new Date(),days=['SUN','MON','TUE','WED','THU','FRI','SAT'],mons=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  function pad(n){return (n<10?'0':'')+n;}
-  document.getElementById('clock').textContent=days[d.getDay()]+' '+pad(d.getDate())+' '+mons[d.getMonth()]+' '+pad(d.getHours())+':'+pad(d.getMinutes());
 
   var FIX=660,CLC=90,CLF=75,STAY=3,COMM=.15,MAINT=.03,FURN=7000;
   function net(adr,R,O){var sn=365*O,book=adr*sn,fees=sn/STAY*CLF;return (book+fees-(R*12*(1+MAINT)+COMM*(book+fees)+FIX*12+sn/STAY*CLC))/12;}
@@ -384,6 +504,308 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
   }
   [rent,adr,occ].forEach(function(el){el.addEventListener('input',calc);});
   calc();
+})();
+</script>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var each = function(list, fn){ Array.prototype.forEach.call(list, fn); };
+
+  /* ---------- language ---------- */
+  var sel = $('lang');
+  function cookieLang(){
+    var m = document.cookie.match(/(?:^|;\s*)googtrans=\/[^\/;]*\/([^;]+)/);
+    return m ? decodeURIComponent(m[1]) : 'en';
+  }
+  var cur = cookieLang();
+  if (!sel.querySelector('option[value="' + cur + '"]')) cur = 'en';
+  sel.value = cur;
+  function bcp(c){ return ({iw:'he', jw:'jv', 'mni-Mtei':'mni', gom:'kok'})[c] || c; }
+
+  /* ---------- live clock: the viewer's real time, ticking ---------- */
+  var EN_D = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  var EN_M = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function dateLabel(d){
+    if (cur === 'en') return EN_D[d.getDay()] + ' ' + pad(d.getDate()) + ' ' + EN_M[d.getMonth()];
+    try {
+      var L = bcp(cur), f = function(o){ return new Intl.DateTimeFormat(L, o).format(d); };
+      return (f({weekday:'short'}) + ' ' + f({day:'2-digit'}) + ' ' + f({month:'short'})).replace(/\./g, '').toLocaleUpperCase(L);
+    } catch (e) { return EN_D[d.getDay()] + ' ' + pad(d.getDate()) + ' ' + EN_M[d.getMonth()]; }
+  }
+  function tick(){
+    var d = new Date();
+    $('clock').textContent = dateLabel(d) + ' ' + pad(d.getHours()) + (d.getSeconds() % 2 ? ' ' : ':') + pad(d.getMinutes());
+  }
+  tick();
+  setTimeout(function(){ tick(); setInterval(tick, 1000); }, 1000 - Date.now() % 1000);
+
+  /* ---------- translation (Google's page translator, driven by the menu) ---------- */
+  var gt = 'none', gtQueue = [];
+  function gtFail(){ gt = 'failed'; gtQueue = []; showLink(); }
+  function loadGT(cb){
+    if (gt === 'ready'){ cb(); return; }
+    if (gt === 'failed'){ showLink(); return; }
+    gtQueue.push(cb);
+    if (gt === 'loading') return;
+    gt = 'loading';
+    window.gteInit = function(){
+      try {
+        new google.translate.TranslateElement({pageLanguage:'en', autoDisplay:false}, 'gte');
+        gt = 'ready';
+        var q = gtQueue; gtQueue = []; q.forEach(function(f){ f(); });
+      } catch (e) { gtFail(); }
+    };
+    var s = document.createElement('script');
+    s.src = 'https://translate.google.com/translate_a/element.js?cb=gteInit';
+    s.onerror = gtFail;
+    document.head.appendChild(s);
+    setTimeout(function(){ if (gt === 'loading') gtFail(); }, 10000);
+  }
+  // Fallback when the translator can't load here: open Google's translated copy of the public page.
+  function showLink(){
+    var a = $('trlink');
+    if (cur === 'en'){ a.hidden = true; return; }
+    var path = /github\.io$/.test(location.hostname) ? location.pathname : '/';
+    a.href = 'https://adeadetayo6-github-io.translate.goog' + path + '?_x_tr_sl=en&_x_tr_tl=' + encodeURIComponent(cur) + '&_x_tr_hl=en';
+    a.hidden = false;
+  }
+  function setCombo(code, tries){
+    var c = document.querySelector('#gte select.goog-te-combo');
+    tries = tries || 0;
+    if (!c){ if (tries < 60) setTimeout(function(){ setCombo(code, tries + 1); }, 150); else gtFail(); return; }
+    c.value = code; c.dispatchEvent(new Event('change'));
+    setTimeout(function(){
+      var h = document.documentElement.classList;
+      if (!h.contains('translated-ltr') && !h.contains('translated-rtl')){ c.value = code; c.dispatchEvent(new Event('change')); }
+    }, 900);
+  }
+  function setCookie(v){
+    var tail = v ? '' : ';expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    var val = 'googtrans=' + (v || '') + tail + ';path=/';
+    document.cookie = val;
+    if (location.hostname){ document.cookie = val + ';domain=' + location.hostname; document.cookie = val + ';domain=.' + location.hostname; }
+  }
+  sel.addEventListener('change', function(){
+    var v = sel.value;
+    stopAudio();
+    cur = v; tick();
+    if (v === 'en'){
+      setCookie('');
+      $('trlink').hidden = true;
+      if (gt === 'ready' || document.documentElement.classList.contains('translated-ltr') || document.documentElement.classList.contains('translated-rtl')) location.reload();
+      return;
+    }
+    setCookie('/en/' + v);
+    loadGT(function(){ setCombo(v); });
+  });
+  if (cur !== 'en') loadGT(function(){ setCombo(cur); });
+
+  /* ---------- side rail ---------- */
+  var side = $('side'), scrim = $('scrim'), menuBtn = $('menuBtn');
+  var SECS = Array.prototype.slice.call(document.querySelectorAll('section.panel[id]'));
+  function openSide(o){
+    side.classList.toggle('open', o);
+    scrim.hidden = !o;
+    menuBtn.setAttribute('aria-expanded', String(o));
+    menuBtn.setAttribute('aria-label', o ? 'Close the index' : 'Open the index');
+    menuBtn.querySelector('.lbl').textContent = o ? 'CLOSE' : 'INDEX';
+  }
+  menuBtn.addEventListener('click', function(){ openSide(!side.classList.contains('open')); });
+  scrim.addEventListener('click', function(){ openSide(false); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') openSide(false); });
+  each(side.querySelectorAll('a[href^="#"]'), function(a){
+    a.addEventListener('click', function(){
+      openSide(false);
+      var id = a.getAttribute('href').slice(1), i = SECS.map(function(s){ return s.id; }).indexOf(id);
+      if (P.state === 'playing' && i >= 0) jumpTo(i, false);
+    });
+  });
+  var current = 'top';
+  function markNav(){
+    each(side.querySelectorAll('a.item'), function(a){ a.setAttribute('aria-current', a.dataset.sec === current ? 'true' : 'false'); });
+  }
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ current = e.target.id; markNav(); } });
+    }, {rootMargin:'-40% 0px -55% 0px'});
+    SECS.forEach(function(s){ io.observe(s); });
+  }
+  markNav();
+
+  /* ---------- listen: the page read aloud, section by section ---------- */
+  // Wallace's recorded voice goes here, one file per section, e.g. top:'audio/top.mp3'.
+  // Sections with a file play the recording (English); the rest use the device's voice.
+  var VOICE = {};
+
+  var READ = 'h1,h2,h3,p,li,.stat,.node,.kicker,figcaption';
+  function clean(t){
+    return t.replace(/[·•]/g, ',').replace(/[←-⇿↗#]/g, ' ').replace(/\s+/g, ' ').replace(/\s+([.,;:!?])/g, '$1').replace(/,\s*,/g, ',').trim();
+  }
+  function textOf(el){
+    var out = '';
+    (function walk(n){
+      for (var c = n.firstChild; c; c = c.nextSibling){
+        if (c.nodeType === 3) out += c.data;
+        else if (c.nodeType === 1){
+          if (c.getAttribute('aria-hidden') === 'true' || c.tagName === 'SCRIPT' || c.tagName === 'STYLE') continue;
+          if (c.tagName === 'BR'){ out += ' '; continue; }
+          walk(c); out += ' ';
+        }
+      }
+    })(el);
+    return clean(out);
+  }
+  function lines(sec){
+    var res = [];
+    each(sec.querySelectorAll(READ), function(el){
+      if (el.closest('[data-noread],[aria-hidden="true"],.index,.tools,.contact,.cta,.count')) return;
+      var parent = el.parentElement && el.parentElement.closest(READ);
+      if (parent && sec.contains(parent)) return;
+      var t = el.classList.contains('stat') ? textOf(el.querySelector('b')) + ', ' + textOf(el.querySelector('span')) : textOf(el);
+      if (t) res.push(/[.!?:]$/.test(t) ? t : t + '.');
+    });
+    return res;
+  }
+  function chunks(arr){
+    var out = [];
+    arr.forEach(function(t){
+      (t.match(/[^.!?]+(?:[.!?]+["\u201d\u2019)]*)?/g) || [t]).forEach(function(s){
+        s = s.trim();
+        while (s.length > 220){ var i = s.lastIndexOf(' ', 220); if (i < 60) i = 220; out.push(s.slice(0, i)); s = s.slice(i + 1); }
+        if (s && /[0-9A-Za-z\u00c0-\uffff]/.test(s.replace(/[\u2018-\u201f]/g, ''))) out.push(s);
+      });
+    });
+    return out;
+  }
+  var EN = {};
+  SECS.forEach(function(s){ EN[s.id] = chunks(lines(s)); });
+
+  var synth = window.speechSynthesis, voices = [];
+  function loadVoices(){ voices = synth ? synth.getVoices() : []; }
+  if (synth){ loadVoices(); if ('onvoiceschanged' in synth) synth.onvoiceschanged = loadVoices; }
+  function pickVoice(code){
+    var L = bcp(code).toLowerCase();
+    var c = voices.filter(function(v){ return v.lang.toLowerCase().replace('_', '-').indexOf(L) === 0; });
+    if (!c.length) return null;
+    if (L === 'en'){ var gb = c.filter(function(v){ return /en-gb/i.test(v.lang.replace('_', '-')); }); if (gb.length) c = gb; }
+    var good = c.filter(function(v){ return /natural|neural|google|premium|enhanced/i.test(v.name); });
+    return good[0] || c[0];
+  }
+
+  function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  var vsel = $('vsel'), rsel = $('rsel');
+  var savedRate = store('pf.rate');
+  if (savedRate && rsel.querySelector('option[value="' + savedRate + '"]')) rsel.value = savedRate;
+  function langVoices(code){
+    var L = bcp(code).toLowerCase().split('-')[0];
+    return voices.filter(function(v){ return v.lang.toLowerCase().replace('_', '-').split('-')[0] === L; });
+  }
+  function fillVoices(){
+    var want = vsel.value || store('pf.voice') || '';
+    var list = langVoices(cur);
+    if (!list.length) list = langVoices('en');
+    vsel.innerHTML = '<option value="">Automatic</option>' + list.map(function(v){
+      return '<option value="' + v.name.replace(/"/g, '&quot;') + '">' + v.name.replace(/</g, '&lt;') + ' (' + v.lang.replace('_', '-') + ')</option>';
+    }).join('');
+    vsel.value = list.some(function(v){ return v.name === want; }) ? want : '';
+    vsel.disabled = !list.length;
+  }
+  function chosenVoice(code){
+    var name = vsel.value;
+    if (!name) return pickVoice(code);
+    var v = langVoices(code).filter(function(x){ return x.name === name; })[0];
+    return v || pickVoice(code);
+  }
+  function restartChunk(){ if (P.state === 'playing'){ halt(); speakSection(false); } }
+  vsel.addEventListener('change', function(){ store('pf.voice', vsel.value); restartChunk(); });
+  rsel.addEventListener('change', function(){ store('pf.rate', rsel.value); if (P.audio) P.audio.playbackRate = +rsel.value; restartChunk(); });
+  if (synth && 'onvoiceschanged' in synth) synth.onvoiceschanged = function(){ loadVoices(); fillVoices(); };
+  fillVoices();
+  sel.addEventListener('change', fillVoices);
+
+  var P = {state:'idle', idx:0, ci:0, list:[], voice:null, useLang:'en', lang:'en', token:0, audio:null, filePos:0};
+  function status(t){ $('lstatus').textContent = t || ''; }
+  function navLabel(sec){
+    var a = side.querySelector('a.item[data-sec="' + sec.id + '"]');
+    return a ? a.querySelector('.num').textContent + ' · ' + a.querySelector('span').textContent : '';
+  }
+  function setButtons(){
+    each(document.querySelectorAll('[data-listen]'), function(b){
+      var strip = b.classList.contains('listen');
+      b.setAttribute('aria-pressed', String(P.state === 'playing'));
+      b.querySelector('.lbl').textContent = P.state === 'playing' ? (strip ? '❚❚ PAUSE' : 'Pause')
+        : P.state === 'paused' ? (strip ? '▶ RESUME' : 'Resume') : (strip ? '▶ LISTEN' : 'Listen to this page');
+    });
+    $('lctl').hidden = P.state === 'idle';
+    menuBtn.classList.toggle('playing', P.state === 'playing');
+    var sec = SECS[P.idx];
+    $('fabNow').textContent = P.state === 'playing' && sec ? '\u00b7 ' + (side.querySelector('a.item[data-sec="' + sec.id + '"] .num') || {textContent:''}).textContent : '';
+  }
+  function markReading(sec, scroll){
+    each(document.querySelectorAll('.panel.reading,.side a.item.reading'), function(el){ el.classList.remove('reading'); });
+    if (!sec) return;
+    sec.classList.add('reading');
+    var a = side.querySelector('a.item[data-sec="' + sec.id + '"]'); if (a) a.classList.add('reading');
+    if (scroll) sec.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
+  }
+  function halt(){
+    P.token++;
+    if (synth) synth.cancel();
+    if (P.audio){ P.filePos = P.audio.currentTime; P.audio.pause(); }
+  }
+  function stopAudio(){
+    halt(); P.state = 'idle'; P.ci = 0; P.filePos = 0;
+    markReading(null); setButtons(); status('');
+  }
+  function speakSection(scroll){
+    if (P.state !== 'playing') return;
+    if (P.idx >= SECS.length){ stopAudio(); status('Finished. Thanks for listening.'); return; }
+    var sec = SECS[P.idx];
+    markReading(sec, scroll);
+    setButtons();
+    if (P.lang === 'en' && VOICE[sec.id]){ status(navLabel(sec) + ' · my voice'); playFile(sec); return; }
+    if (!synth){ status('This browser can’t read aloud.'); stopAudio(); return; }
+    var v = chosenVoice(P.lang);
+    if (v || P.lang === 'en'){ P.voice = v; P.useLang = P.lang; P.list = P.lang === 'en' ? EN[sec.id] : chunks(lines(sec)); status(navLabel(sec)); }
+    else { P.voice = chosenVoice('en'); P.useLang = 'en'; P.list = EN[sec.id]; status('No voice for this language on this device, so reading in English. ' + navLabel(sec)); }
+    speakChunk();
+  }
+  function next(){ P.idx++; P.ci = 0; P.filePos = 0; speakSection(true); }
+  function speakChunk(){
+    if (P.state !== 'playing') return;
+    if (P.ci >= P.list.length){ next(); return; }
+    var u = new SpeechSynthesisUtterance(P.list[P.ci]), token = P.token;
+    u.lang = P.voice ? P.voice.lang : bcp(P.useLang);
+    try { if (P.voice) u.voice = P.voice; } catch (e) {}
+    u.rate = +rsel.value || 1;
+    u.onend = function(){ if (token !== P.token) return; P.ci++; speakChunk(); };
+    u.onerror = function(e){ if (token !== P.token) return; if (e.error === 'interrupted' || e.error === 'canceled') return; P.ci++; speakChunk(); };
+    synth.speak(u);
+  }
+  function playFile(sec){
+    if (!P.audio) P.audio = new Audio();
+    var a = P.audio, token = P.token;
+    if (a.dataset.sec !== sec.id){ a.src = VOICE[sec.id]; a.dataset.sec = sec.id; P.filePos = 0; }
+    a.onended = function(){ if (token === P.token) next(); };
+    a.onerror = function(){ if (token !== P.token) return; delete VOICE[sec.id]; speakSection(false); };
+    try { a.currentTime = P.filePos; } catch (e) {}
+    a.playbackRate = +rsel.value || 1;
+    var pr = a.play(); if (pr && pr.catch) pr.catch(function(){ if (token === P.token){ delete VOICE[sec.id]; speakSection(false); } });
+  }
+  function jumpTo(i, scroll){ halt(); P.state = 'playing'; P.idx = i; P.ci = 0; P.filePos = 0; setButtons(); speakSection(scroll); }
+  function toggle(){
+    if (P.state === 'playing'){ halt(); P.state = 'paused'; setButtons(); status('Paused · ' + navLabel(SECS[P.idx])); return; }
+    if (P.state === 'paused'){ P.state = 'playing'; setButtons(); speakSection(false); return; }
+    if (!synth && !Object.keys(VOICE).length){ status('This browser can’t read aloud.'); return; }
+    P.lang = cur;
+    var start = Math.max(0, SECS.map(function(s){ return s.id; }).indexOf(current));
+    jumpTo(start, false);
+  }
+  each(document.querySelectorAll('[data-listen]'), function(b){ b.addEventListener('click', toggle); });
+  $('lstop').addEventListener('click', stopAudio);
+  $('lnext').addEventListener('click', function(){ if (P.idx < SECS.length - 1) jumpTo(P.idx + 1, true); else stopAudio(); });
+  setButtons();
 })();
 </script>
 

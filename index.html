@@ -94,6 +94,11 @@ h2{font-family:var(--display);font-weight:850;font-stretch:112%;text-transform:u
 .p-cream .email{background:var(--ink);color:var(--cream)}
 .btn{font:800 13.5px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;background:var(--rust);color:var(--cream);border:0;padding:16px 20px;cursor:pointer}
 
+a.btn{display:inline-block;text-decoration:none}
+.p-rust a.btn{background:var(--gold);color:var(--night)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.cta span{font:400 20px/1.2 var(--pixel);letter-spacing:.04em;color:var(--on-dark-2)}
+
 /* title page: upright, centred, spaced */
 .cover{text-align:center;padding-block:88px 80px}
 .cover .in{justify-items:center;gap:30px}
@@ -154,17 +159,16 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </head>
 <body>
 
-
 <div class="tt" aria-hidden="true"><span>P100 ADELEYE</span><span>PORTFOLIO</span><span id="clock">THU 01 OCT</span></div>
 
 <section class="panel p-cream cover" aria-labelledby="h-cover">
-  <span class="count" aria-hidden="true">1 / 8</span>
+  <span class="count" aria-hidden="true">1 / 9</span>
   <div class="in">
     <div class="mark">P100 &middot; INDEX</div>
     <h1 class="name" id="h-cover">Wallace<br>Adeleye</h1>
     <div class="rule" aria-hidden="true"></div>
     <p class="role">Business operations &middot; Analytics &middot; Automation</p>
-    <p class="prep">Four things I built. One of them you can try for yourself.</p>
+    <p class="prep">Five things I built. Two of them you can try for yourself.</p>
     <ol class="index" aria-label="Contents">
       <li><a href="#ford"><span class="n">02</span><span class="t">Ford, in numbers</span><span class="d">Where it started</span></a></li>
       <li><a href="#model"><span class="n">03</span><span class="t">The deal model</span><span class="d">Financial modelling</span></a></li>
@@ -172,13 +176,14 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
       <li><a href="#london"><span class="n">05</span><span class="t">London, ranked</span><span class="d">Data analysis</span></a></li>
       <li><a href="#ops"><span class="n">06</span><span class="t">Run like a team</span><span class="d">Operations</span></a></li>
       <li><a href="#health"><span class="n">07</span><span class="t">The IT health check</span><span class="d">Service design</span></a></li>
-      <li><a href="#how"><span class="n">08</span><span class="t">How I work</span><span class="d">And how to reach me</span></a></li>
+      <li><a href="#carnival"><span class="n">08</span><span class="t">Carnival sound map</span><span class="d">Offline by design</span></a></li>
+      <li><a href="#how"><span class="n">09</span><span class="t">How I work</span><span class="d">And how to reach me</span></a></li>
     </ol>
   </div>
 </section>
 
 <section class="panel p-night" id="ford" aria-labelledby="h-ford">
-  <span class="count" aria-hidden="true">2 / 8</span>
+  <span class="count" aria-hidden="true">2 / 9</span>
   <div class="in">
     <div class="kicker">Background</div>
     <h2 id="h-ford">Ford Dunton.<br><span class="hl">Two years in.</span></h2>
@@ -192,7 +197,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-rust" id="model" aria-labelledby="h-c1">
-  <span class="count" aria-hidden="true">3 / 8</span>
+  <span class="count" aria-hidden="true">3 / 9</span>
   <div class="in">
     <div class="kicker">Case 1 &middot; Financial modelling</div>
     <h2 id="h-c1">A deal model that became <span class="hl">a product.</span></h2>
@@ -211,7 +216,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-olive" id="try" aria-labelledby="h-try">
-  <span class="count" aria-hidden="true">4 / 8</span>
+  <span class="count" aria-hidden="true">4 / 9</span>
   <div class="in">
     <div class="kicker">Try the model</div>
     <p class="quote" id="h-try">&ldquo;Change two numbers and the whole P&amp;L answers back.&rdquo;</p>
@@ -232,7 +237,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-night" id="london" aria-labelledby="h-c2">
-  <span class="count" aria-hidden="true">5 / 8</span>
+  <span class="count" aria-hidden="true">5 / 9</span>
   <div class="in">
     <div class="kicker">Case 2 &middot; Data analysis</div>
     <h2 id="h-c2">London, ranked.<br><span class="hl">Before looking.</span></h2>
@@ -251,7 +256,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-cream" id="ops" aria-labelledby="h-c3">
-  <span class="count" aria-hidden="true">6 / 8</span>
+  <span class="count" aria-hidden="true">6 / 9</span>
   <div class="in">
     <div class="kicker">Case 3 &middot; Operations and automation</div>
     <h2 id="h-c3">One person.<br><span class="hl">Run like a team.</span></h2>
@@ -287,7 +292,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 </section>
 
 <section class="panel p-olive" id="health" aria-labelledby="h-c4">
-  <span class="count" aria-hidden="true">7 / 8</span>
+  <span class="count" aria-hidden="true">7 / 9</span>
   <div class="in">
     <div class="kicker">Case 4 &middot; Service design</div>
     <h2 id="h-c4">An IT health check<br><span class="hl">for small organisations.</span></h2>
@@ -304,8 +309,27 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
   </div>
 </section>
 
+<section class="panel p-rust" id="carnival" aria-labelledby="h-c5">
+  <span class="count" aria-hidden="true">8 / 9</span>
+  <div class="in">
+    <div class="kicker">Case 5 &middot; Offline by design</div>
+    <h2 id="h-c5">A sound-system map<br><span class="hl">for a festival with no signal.</span></h2>
+    <div class="stats">
+      <div class="stat"><b>37</b><span>Sound systems and stages pinned</span></div>
+      <div class="stat"><b>0 BARS</b><span>Needed once it&rsquo;s loaded</span></div>
+      <div class="stat g"><b>1 TAP</b><span>To walking directions</span></div>
+    </div>
+    <div class="cards">
+      <div class="card"><h3>Problem</h3><p>At Notting Hill Carnival, mobile signal all but disappears. The official map is a poster image, so finding a sound system means guessing street corners in a crowd.</p></div>
+      <div class="card"><h3>What I built</h3><ul><li>The official map with every sound system pinned and searchable</li><li>Pins calibrated to GPS from the poster&rsquo;s own tube-station marks, so a blue dot shows where you are</li><li>One tap hands walking directions to Google or Apple Maps</li><li>Loads once, then works with no signal</li></ul></div>
+      <div class="card"><h3>Result</h3><p>A one-page app that still works when the network doesn&rsquo;t.</p><p class="hit">Built for the constraint, not around it.</p></div>
+    </div>
+    <div class="cta"><a class="btn" href="https://adeadetayo6.github.io/carnival/" target="_blank" rel="noopener">Open the map</a><span>Best on a phone</span></div>
+  </div>
+</section>
+
 <section class="panel p-night" id="how" aria-labelledby="h-how">
-  <span class="count" aria-hidden="true">8 / 8</span>
+  <span class="count" aria-hidden="true">9 / 9</span>
   <div class="in">
     <div class="kicker">How I work</div>
     <p class="quote" id="h-how">&ldquo;I design the system, set the rules and check the numbers.&rdquo;</p>

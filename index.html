@@ -172,7 +172,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 .panel{scroll-margin-top:42px}
 
 /* side rail: hidden until the toggle is pressed, slides over the page */
-.side{position:fixed;top:0;bottom:0;left:0;width:264px;max-width:86vw;z-index:40;background:var(--cream);color:var(--ink);border-right:1px solid #CFC5AC;display:flex;flex-direction:column;gap:2px;padding:18px 12px calc(84px + env(safe-area-inset-bottom,0px));overflow-y:auto;transform:translateX(-104%);transition:transform .26s cubic-bezier(.2,.8,.2,1);box-shadow:16px 0 48px rgba(0,0,0,.28);visibility:hidden}
+.side{position:fixed;top:0;bottom:0;left:0;width:264px;max-width:86vw;z-index:40;background:var(--cream);color:var(--ink);border-right:1px solid #CFC5AC;display:flex;flex-direction:column;gap:2px;padding:18px 12px calc(110px + env(safe-area-inset-bottom,0px));overflow-y:auto;transform:translateX(-104%);transition:transform .26s cubic-bezier(.2,.8,.2,1);box-shadow:16px 0 48px rgba(0,0,0,.28);visibility:hidden}
 .side.open{transform:none;visibility:visible}
 .side-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 14px}
 .side-brand .mono{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--cream);font:850 13.5px/1 var(--display);letter-spacing:.04em;flex:none}
@@ -187,14 +187,14 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 .side-pill{margin:12px 4px 4px;display:flex;align-items:center;justify-content:center;gap:9px;border:1.5px solid var(--ink);border-radius:999px;padding:11px 16px;background:transparent;color:var(--ink);font:700 14px/1 var(--display);cursor:pointer}
 .side-pill:hover{background:var(--cream-2)}
 .side-pill[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
-.side-row{display:flex;gap:8px;margin:0 4px}
+.side-row{display:flex;gap:8px;margin:12px 4px 0}
 .side-row button{flex:1;border:1.5px solid var(--ink);border-radius:999px;padding:8px 10px;background:transparent;color:var(--ink);font:700 12.5px/1 var(--display);cursor:pointer}
-.side-opts{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:8px;margin:8px 4px 0}
+.side-opts{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:10px;margin:12px 4px 0}
 .side-opts label{display:grid;gap:4px;font:700 10.5px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);min-width:0}
 .side-opts select{font:500 13px/1.2 var(--display);color:var(--ink);background:var(--cream-2);border:1px solid #CFC5AC;border-radius:8px;padding:7px 6px;min-width:0;width:100%}
-.side-status{min-height:1.3em;margin:6px 8px 0;font:400 16px/1.2 var(--pixel);color:var(--ink-2);letter-spacing:.03em}
-.side-label{margin:16px 10px 4px;font:700 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
-.side a.quick{padding:7px 10px;border-radius:10px;font:600 13.5px/1.3 var(--display);text-decoration:none;color:var(--ink)}
+.side-status{min-height:1.3em;margin:12px 8px 0;font:400 16px/1.2 var(--pixel);color:var(--ink-2);letter-spacing:.03em}
+.side-label{margin:22px 10px 6px;font:700 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+.side a.quick{display:block;align-self:flex-start;padding:8px 10px;border-radius:10px;font:600 13.5px/1.3 var(--display);text-decoration:none;color:var(--ink)}
 .side a.quick:hover{background:var(--cream-2)}
 .scrim{position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.4);border:0;padding:0}
 .panel.reading .count{background:var(--gold);color:#000;opacity:1;padding:2px 6px}
@@ -202,6 +202,8 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 /* the toggle: a teletext-gold button that morphs from three bars into an X */
 .fab{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;display:flex;align-items:center;gap:10px;height:52px;padding:0 18px 0 15px;border-radius:999px;border:2px solid var(--gold);background:#000;color:var(--gold);font:400 21px/1 var(--pixel);letter-spacing:.06em;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:transform .15s ease}
 .fab:hover{transform:translateY(-2px)}
+.fab{transition:transform .15s ease,opacity .18s ease}
+.fab.ghost{opacity:.28;pointer-events:none}
 .fab .bars{position:relative;width:20px;height:14px;flex:none}
 .fab .bars i{position:absolute;left:0;width:20px;height:2px;background:currentColor;transition:transform .25s ease,opacity .2s ease,top .25s ease}
 .fab .bars i:nth-child(1){top:0}.fab .bars i:nth-child(2){top:6px}.fab .bars i:nth-child(3){top:12px}
@@ -612,6 +614,14 @@ body{top:0!important}
     menuBtn.querySelector('.lbl').textContent = o ? 'CLOSE' : 'INDEX';
   }
   menuBtn.addEventListener('click', function(){ openSide(!side.classList.contains('open')); });
+  // When the open index sits under the toggle, fade the toggle and let clicks reach the link beneath it.
+  document.addEventListener('mousemove', function(e){
+    if (!side.classList.contains('open')){ menuBtn.classList.remove('ghost'); return; }
+    var r = menuBtn.getBoundingClientRect();
+    var inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+    var under = inside && document.elementsFromPoint(e.clientX, e.clientY).some(function(el){ return el !== menuBtn && side.contains(el) && el.closest('a,button,select,label'); });
+    menuBtn.classList.toggle('ghost', !!under);
+  });
   scrim.addEventListener('click', function(){ openSide(false); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') openSide(false); });
   each(side.querySelectorAll('a[href^="#"]'), function(a){

@@ -40,6 +40,7 @@ jobs:
           check "https://adeadetayo6.github.io/" "translate.goog"
           check "https://adeadetayo6.github.io/carnival/" "Carnival"
           check "https://adeadetayo6.github.io/investor/" "Circle"
+          check "https://adeadetayo6.github.io/tech/" "07913 128124"
           check "https://adeadetayo6.github.io/hire/Wallace_Adeleye_Portfolio_Preview.pdf" "PDF"
           {
             echo "failures<<EOF"

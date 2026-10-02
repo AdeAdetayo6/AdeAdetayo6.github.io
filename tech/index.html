@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1B1611">
+<title>Tech and Files Health Check · Wallace Adeleye</title>
+<meta name="description" content="Tech support for local businesses in East London and Essex. A half-day Health Check of your files, software and devices, a clear report, and a team that knows how to keep it tidy. £10 to book.">
+<meta property="og:title" content="Your files, software and devices, sorted.">
+<meta property="og:description" content="A half-day Tech and Files Health Check for small businesses. £10 to book, then £40 to £90.">
+<meta property="og:image" content="https://adeadetayo6.github.io/email/nursery.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* Layout: one scrolling page in the portfolio's teletext style. Problem first, then the
+   before/after, a sample report, the price and one way to get in touch. */
+:root{
+  --night:#1B1611; --ink:#1E1711; --ink-2:#4A4239; --cream:#F0EAD8; --cream-2:#E6DEC7; --paper:#FBF8F0;
+  --gold:#E2C46A; --rust:#8A4A28; --olive:#3C4529; --line:#CFC5AC;
+  --good:#2F7A45; --warn:#B07A1C; --bad:#B23A34;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --pixel:"VT323","Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font:400 16px/1.55 var(--display);-webkit-text-size-adjust:100%}
+a{color:inherit}
+.wrap{max-width:1040px;margin-inline:auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+.k{font:400 20px/1 var(--pixel);letter-spacing:.07em;color:var(--rust)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 20px;border-radius:999px;font:700 16px/1 var(--display);text-decoration:none;border:2px solid var(--ink)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--night)}
+.btn.ghost{background:transparent;color:var(--cream);border-color:var(--cream)}
+.btn.dark{background:var(--ink);color:var(--cream)}
+.btn:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* strip */
+.strip{background:#000;color:var(--gold);font:400 20px/1 var(--pixel);letter-spacing:.06em;padding:10px 0;position:sticky;top:0;z-index:5}
+.strip .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.strip a{color:var(--cream);text-decoration:none}
+
+/* hero */
+.hero{background:var(--night);color:var(--cream);padding-block:56px 64px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:center}
+.hero h1{font-weight:850;font-size:clamp(36px,6vw,62px);line-height:.98;letter-spacing:-.01em;margin-top:12px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero .q{margin:22px 0 0;font-size:19px;line-height:1.45;max-width:34ch;color:#E9E1CC}
+.hero .q b{color:var(--cream)}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero .note{margin-top:14px;font:400 18px/1.2 var(--pixel);letter-spacing:.05em;color:#BFB59C}
+.chaos{position:relative;aspect-ratio:1/1;max-width:100%;background:#120E0B;border-radius:18px;overflow:hidden;border:1px solid #3A3127}
+.chip{position:absolute;padding:8px 12px;border-radius:7px;font:700 14px/1 var(--display);white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.4);transition:transform .7s cubic-bezier(.2,.8,.2,1),left .7s cubic-bezier(.2,.8,.2,1),top .7s cubic-bezier(.2,.8,.2,1),opacity .4s}
+.c1{background:var(--cream);color:var(--ink)}.c2{background:var(--gold);color:var(--ink)}.c3{background:var(--rust);color:var(--cream)}.c4{background:var(--olive);color:var(--cream)}.c5{border:1px dashed #D9D2BF;color:#D9D2BF;box-shadow:none}
+.chaos .lab{position:absolute;left:16px;top:14px;font:400 24px/1 var(--pixel);color:var(--gold);letter-spacing:.06em}
+.chaos .folder{position:absolute;left:8%;right:8%;top:22%;background:var(--paper);color:var(--ink);border-radius:12px;padding:14px 16px;opacity:0;transform:translateY(12px);transition:opacity .5s .3s,transform .5s .3s}
+.chaos.tidy .folder{opacity:1;transform:none}
+.chaos.tidy .chip{opacity:0}
+.folder .root{font-weight:800;padding-bottom:8px;border-bottom:1px solid var(--cream-2);margin-bottom:4px;display:flex;gap:8px;align-items:center}
+.folder .f{display:flex;gap:9px;align-items:center;padding:6px 0 6px 14px;font-weight:600;font-size:15px}
+.ico{width:18px;height:13px;border-radius:2px;background:var(--gold);position:relative;flex:none}
+.ico::before{content:"";position:absolute;left:0;top:-3px;width:8px;height:4px;border-radius:2px 2px 0 0;background:var(--gold)}
+.root .ico,.root .ico::before{background:var(--ink)}
+.folder .wins{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.folder .w{background:var(--olive);color:var(--cream);font-size:12px;font-weight:700;padding:5px 9px;border-radius:999px}
+.toggle{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);display:flex;background:#000;border:1px solid #3A3127;border-radius:999px;padding:4px}
+.toggle button{border:0;background:transparent;color:#BFB59C;font:400 20px/1 var(--pixel);letter-spacing:.06em;padding:8px 16px;border-radius:999px;cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--gold);color:var(--night)}
+
+/* sections */
+section.s{padding-block:64px}
+.s h2{font-weight:850;font-size:clamp(28px,4.2vw,42px);line-height:1.02;margin:10px 0 14px}
+.s .lede{font-size:18px;max-width:60ch;color:var(--ink-2);margin:0 0 28px}
+.sector{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.sector button{border:1.5px solid var(--ink);background:transparent;border-radius:999px;padding:8px 14px;font:600 14px/1 var(--display);cursor:pointer;color:var(--ink)}
+.sector button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.qcard{background:var(--night);color:var(--cream);border-radius:16px;padding:24px;font-size:clamp(20px,2.6vw,26px);font-weight:750;line-height:1.3}
+.qcard small{display:block;margin-top:12px;font:400 20px/1.2 var(--pixel);letter-spacing:.05em;color:var(--gold)}
+
+/* report */
+.paper{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 18px 40px rgba(27,22,17,.12)}
+.rhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:18px}
+.rhead h3{font-size:22px;font-weight:850}
+.sample{font:400 18px/1 var(--pixel);letter-spacing:.06em;background:var(--gold);padding:4px 8px;border-radius:4px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.area{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;display:grid;gap:6px}
+.area b{font-size:15px}
+.area span{font-size:14px;color:var(--ink-2)}
+.rag{display:inline-flex;align-items:center;gap:7px;font:700 12px/1 var(--display);letter-spacing:.06em;text-transform:uppercase}
+.rag::before{content:"";width:12px;height:12px;border-radius:50%;background:currentColor}
+.rag.g{color:var(--good)}.rag.a{color:var(--warn)}.rag.r{color:var(--bad)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:18px}
+.save{background:var(--olive);color:var(--cream);border-radius:12px;padding:18px;display:grid;gap:4px;align-content:start}
+.save .big{font:850 44px/1 var(--display)}
+.save small{color:#D9D2BF}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--cream-2);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.act{font-weight:700}
+.act.cut{color:var(--bad)}.act.keep{color:var(--good)}.act.merge{color:var(--warn)}
+.tbl{overflow-x:auto}
+.wins-list{margin:0;padding-left:20px}
+.wins-list li{margin:0 0 6px}
+
+/* 60 second test */
+.test{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center}
+.clock{background:#000;color:var(--gold);border-radius:16px;padding:22px;text-align:center}
+.clock .t{font:400 84px/1 var(--pixel);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.clock .msg{font:400 22px/1.25 var(--pixel);letter-spacing:.04em;color:var(--cream);min-height:2.6em;margin:8px 0 14px}
+.clock button{border:0;background:var(--gold);color:var(--night);font:700 16px/1 var(--display);padding:12px 18px;border-radius:999px;cursor:pointer}
+.tasks{margin:0;padding-left:22px;font-size:17px}
+.tasks li{margin-bottom:8px}
+
+/* keep it tidy */
+.keep{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.keep .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px}
+.keep .card h3{font-size:18px;margin:6px 0 6px}
+.keep .card p{margin:0;color:var(--ink-2);font-size:15px}
+
+/* price */
+.price{background:var(--night);color:var(--cream)}
+.price .lede{color:#D9D2BF}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.tier{border:1px solid #3A3127;border-radius:14px;padding:20px;display:grid;gap:8px;align-content:start;background:#120E0B}
+.tier.main{border-color:var(--gold);background:#231C15}
+.tier .amt{font:850 34px/1 var(--display)}
+.tier .amt small{font:600 15px var(--display);color:var(--gold);margin-left:6px}
+.tier p{margin:0;color:#D9D2BF;font-size:15px}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:28px}
+.step{border-top:2px solid var(--gold);padding-top:10px;font-size:15px;color:#D9D2BF}
+.step b{display:block;color:var(--cream);font-size:16px;margin-bottom:2px}
+
+/* safe + contact */
+.safe{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.safe div{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:15px}
+.safe b{display:block;margin-bottom:4px}
+.contact{background:var(--gold);color:var(--night);padding-block:56px}
+.contact .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:28px;align-items:center}
+.contact h2{font-weight:850;font-size:clamp(28px,4.2vw,42px);line-height:1.02;margin-top:8px}
+.contact .num{font:400 44px/1 var(--pixel);letter-spacing:.04em;margin:16px 0 4px}
+.contact .acts{display:grid;gap:10px}
+.contact .acts .btn{justify-content:center}
+.contact p{margin:0}
+footer{background:#000;color:#BFB59C;font:400 18px/1.4 var(--pixel);letter-spacing:.05em;padding:18px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--gold)}
+
+@media (max-width:820px){
+  .hero .wrap,.test,.contact .wrap,.two{grid-template-columns:minmax(0,1fr)}
+  .grid,.keep,.tiers{grid-template-columns:minmax(0,1fr)}
+  .steps,.safe{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chaos{max-width:440px;width:100%;justify-self:center}
+}
+@media (max-width:600px){ th:nth-child(2),td:nth-child(2){display:none} }
+@media (max-width:420px){ .steps,.safe{grid-template-columns:minmax(0,1fr)} .strip .hide-s{display:none} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;scroll-behavior:auto!important} }
+</style>
+</head>
+<body>
+
+<div class="strip"><div class="wrap"><span>TECH SUPPORT FOR LOCAL BUSINESSES</span><a href="tel:+447913128124">CALL 07913 128124</a></div></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="k" style="color:var(--gold)">TECH AND FILES HEALTH CHECK</div>
+      <h1>Your files, software and devices, <em>sorted.</em></h1>
+      <p class="q">If someone left tomorrow, could you <b>switch off their access to everything</b> the same day? If the answer is "not sure", that's what I fix.</p>
+      <div class="cta">
+        <a class="btn gold" href="tel:+447913128124">Call 07913 128124</a>
+        <a class="btn ghost" href="https://wa.me/447913128124?text=Hi%20Wallace%2C%20I%27d%20like%20to%20book%20a%20Health%20Check." target="_blank" rel="noopener">WhatsApp me</a>
+      </div>
+      <p class="note">£10 TO BOOK · EAST LONDON AND ESSEX</p>
+    </div>
+    <div class="chaos" id="chaos" aria-label="Before and after: files scattered across many places, then one tidy home">
+      <span class="lab" id="clab">NOW</span>
+      <span class="chip c1" style="left:8%;top:14%;transform:rotate(-6deg)">Email attachments</span>
+      <span class="chip c2" style="left:56%;top:11%;transform:rotate(5deg)">WhatsApp</span>
+      <span class="chip c3" style="left:22%;top:26%;transform:rotate(3deg)">Old laptop</span>
+      <span class="chip c4" style="left:6%;top:38%;transform:rotate(-4deg)">Staff phones</span>
+      <span class="chip c1" style="left:52%;top:34%;transform:rotate(7deg)">USB stick</span>
+      <span class="chip c5" style="left:14%;top:50%;transform:rotate(-2deg)">final_v2_FINAL.docx</span>
+      <span class="chip c2" style="left:60%;top:52%;transform:rotate(-8deg)">Desktop</span>
+      <span class="chip c3" style="left:6%;top:62%;transform:rotate(5deg)">Paper</span>
+      <span class="chip c4" style="left:34%;top:64%;transform:rotate(-3deg)">3 different drives</span>
+      <div class="folder" aria-hidden="true">
+        <div class="root"><span class="ico"></span>Your business</div>
+        <div class="f"><span class="ico"></span>01 Clients</div>
+        <div class="f"><span class="ico"></span>02 Staff</div>
+        <div class="f"><span class="ico"></span>03 Policies</div>
+        <div class="f"><span class="ico"></span>04 Finance</div>
+        <div class="wins"><span class="w">Found in seconds</span><span class="w">Leavers off in 1 click</span><span class="w">Your team keeps it tidy</span></div>
+      </div>
+      <div class="toggle" role="group" aria-label="Show before or after">
+        <button type="button" id="tNow" aria-pressed="true">NOW</button>
+        <button type="button" id="tAfter" aria-pressed="false">AFTER</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="s" id="problem">
+  <div class="wrap">
+    <div class="k">THE PROBLEM YOU HAVEN'T NOTICED</div>
+    <h2>One question for your type of business.</h2>
+    <p class="lede">Most small teams can't answer this straight away. Pick yours.</p>
+    <div class="sector" id="sector" role="group" aria-label="Type of business"></div>
+    <div class="qcard"><span id="qtext"></span><small id="qsmall"></small></div>
+  </div>
+</section>
+
+<section class="s" id="report" style="padding-top:0">
+  <div class="wrap">
+    <div class="k">WHAT YOU GET</div>
+    <h2>A short report you can act on this week.</h2>
+    <p class="lede">After half a day on site you get a written report within 3 working days. Here's what one looks like.</p>
+    <div class="paper">
+      <div class="rhead"><h3>Health Check report: a 12-person practice</h3><span class="sample">SAMPLE · EXAMPLE FIGURES</span></div>
+      <div class="grid">
+        <div class="area"><span class="rag a">Amber</span><b>People and access</b><span>2 people who left still have email. No two-step login on the shared inbox.</span></div>
+        <div class="area"><span class="rag r">Red</span><b>Software and subscriptions</b><span>Paying for Dropbox and OneDrive, and 4 licences nobody uses.</span></div>
+        <div class="area"><span class="rag r">Red</span><b>Files</b><span>Client files in 5 places. The 60-second test took 3 minutes on average.</span></div>
+        <div class="area"><span class="rag a">Amber</span><b>Communication</b><span>Client questions arrive in personal WhatsApp groups.</span></div>
+        <div class="area"><span class="rag g">Green</span><b>Devices</b><span>All laptops updated and encrypted. One 7-year-old PC to replace.</span></div>
+        <div class="area"><span class="rag a">Amber</span><b>Security basics</b><span>Router still on its default password. Backups never test-restored.</span></div>
+      </div>
+      <div class="two">
+        <div class="save"><small>SAVINGS FOUND</small><span class="big">£1,140</span><small>a year, from cancelled and merged subscriptions</small></div>
+        <div>
+          <b>Quick wins for this week (free)</b>
+          <ol class="wins-list" style="margin-top:6px">
+            <li>Remove the two leavers' email accounts</li>
+            <li>Turn on two-step login for the shared inbox</li>
+            <li>Change the router's default password</li>
+          </ol>
+        </div>
+      </div>
+      <div class="tbl" style="margin-top:18px">
+        <table>
+          <thead><tr><th>Tool</th><th>What it's for</th><th>Per month</th><th>Licences used</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Dropbox Business</td><td>File storage</td><td class="n">£45</td><td class="n">3 of 9</td><td class="act cut">Cancel, move to OneDrive</td></tr>
+            <tr><td>Microsoft 365</td><td>Email, Office, OneDrive</td><td class="n">£126</td><td class="n">12 of 14</td><td class="act merge">Drop 2 licences</td></tr>
+            <tr><td>Zoom Pro</td><td>Video calls</td><td class="n">£13</td><td class="n">1 of 1</td><td class="act cut">Cancel, use Teams</td></tr>
+            <tr><td>Xero</td><td>Accounts</td><td class="n">£33</td><td class="n">3 of 3</td><td class="act keep">Keep</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="test" style="padding-top:0">
+  <div class="wrap test">
+    <div>
+      <div class="k">TRY IT NOW</div>
+      <h2>The 60-second test.</h2>
+      <p class="lede" style="margin-bottom:14px">Ask someone on your team to find one of these. Start the clock.</p>
+      <ol class="tasks">
+        <li>The latest version of your price list or rota</li>
+        <li>A customer's last invoice</li>
+        <li>Last month's figures</li>
+      </ol>
+    </div>
+    <div class="clock">
+      <div class="t" id="t">00:00</div>
+      <div class="msg" id="msg">Under a minute and you're ahead of most.</div>
+      <button type="button" id="go">Start the clock</button>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="keep" style="padding-top:0">
+  <div class="wrap">
+    <div class="k">IT STAYS TIDY</div>
+    <h2>Your team learns to keep it that way.</h2>
+    <p class="lede">The point isn't to need me forever. It's a setup your staff can run themselves.</p>
+    <div class="keep">
+      <div class="card"><div class="k">ONE HOME</div><h3>Everything in one place</h3><p>One place for your files, sensible folders, clear names, and the right people seeing the right things.</p></div>
+      <div class="card"><div class="k">ONE SESSION</div><h3>Short training</h3><p>One short session with your team: where things go, how to share, how to add and remove people.</p></div>
+      <div class="card"><div class="k">ONE PAGE</div><h3>A guide on the wall</h3><p>A one-page guide in plain English, so new starters get it right from day one.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s price" id="price">
+  <div class="wrap">
+    <div class="k" style="color:var(--gold)">PRICE</div>
+    <h2>Simple, and small to start.</h2>
+    <p class="lede">The subscriptions you cancel often cover it.</p>
+    <div class="tiers">
+      <div class="tier main"><div class="k" style="color:var(--gold)">1 · THE WAY IN</div><h3>Health Check</h3><div class="amt">£40–£90<small>+ £10 to book</small></div><p>Half a day on site and a written report in 3 working days. The price depends on how many devices and how much data there is, and I confirm it before I start.</p></div>
+      <div class="tier"><div class="k" style="color:var(--gold)">2 · THE FIX</div><h3>Tidy-up</h3><div class="amt" style="font-size:26px">Fixed quote</div><p>If you want me to do the work in the report: one home for your files, your tools connected, staff trained. One fixed price, agreed first.</p></div>
+      <div class="tier"><div class="k" style="color:var(--gold)">3 · OPTIONAL</div><h3>Monthly care</h3><div class="amt" style="font-size:26px">Priced to size</div><p>A monthly check, starters and leavers set up and removed properly, and one person to call.</p></div>
+    </div>
+    <div class="steps">
+      <div class="step"><b>1. Book for £10</b>A 15-minute chat and a slot for your visit.</div>
+      <div class="step"><b>2. Health Check</b>Half a day on site. Your team logs in, I look.</div>
+      <div class="step"><b>3. Report in 3 days</b>Red, amber, green, savings found, quick wins.</div>
+      <div class="step"><b>4. Your choice</b>Do the quick wins yourself, or have me do the tidy-up.</div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="safe">
+  <div class="wrap">
+    <div class="k">YOUR DATA</div>
+    <h2>Safe with me.</h2>
+    <div class="safe">
+      <div><b>No passwords</b>I never ask for, write down or keep them. Your team logs in.</div>
+      <div><b>Read-only checks</b>My device checks look and change nothing.</div>
+      <div><b>Backed up first</b>Nothing gets moved until it's backed up.</div>
+      <div><b>In writing</b>A signed scope and a data agreement before I start.</div>
+    </div>
+    <p class="lede" style="margin-top:24px">Before this I spent two years at Ford's Dunton Technical Centre keeping engineering data, documents and reports in order. <a href="https://adeadetayo6.github.io/">See my portfolio</a>.</p>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div>
+      <div class="k" style="color:var(--rust)">BOOK A HEALTH CHECK</div>
+      <h2>Free for 15 minutes this week?</h2>
+      <div class="num">07913 128124</div>
+      <p>Call or WhatsApp. Or email <b>adetayoadeleye6@gmail.com</b></p>
+    </div>
+    <div class="acts">
+      <a class="btn dark" href="tel:+447913128124">Call now</a>
+      <a class="btn" style="background:#fff" href="https://wa.me/447913128124?text=Hi%20Wallace%2C%20I%27d%20like%20to%20book%20a%20Health%20Check." target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn" style="background:transparent" href="mailto:adetayoadeleye6@gmail.com?subject=Health%20Check">Email</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>WALLACE ADELEYE · TECH SUPPORT FOR LOCAL BUSINESSES</span><a href="https://adeadetayo6.github.io/">PORTFOLIO →</a></div></footer>
+
+<script>
+(function(){
+  // before / after
+  var chaos = document.getElementById('chaos'), now = document.getElementById('tNow'), after = document.getElementById('tAfter'), lab = document.getElementById('clab');
+  var auto = true;
+  function show(tidy){ chaos.classList.toggle('tidy', tidy); now.setAttribute('aria-pressed', String(!tidy)); after.setAttribute('aria-pressed', String(tidy)); lab.textContent = tidy ? 'AFTER' : 'NOW'; }
+  now.addEventListener('click', function(){ auto = false; show(false); });
+  after.addEventListener('click', function(){ auto = false; show(true); });
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    setInterval(function(){ if (auto) show(!chaos.classList.contains('tidy')); }, 3200);
+  }
+
+  // one question per sector
+  var Q = {
+    'Nurseries': ["If a member of staff left tomorrow, could you switch off their access to every tablet, app and folder holding children's records the same day?", 'CHILDREN & FAMILIES · STAFF & DBS · OFSTED · FEES'],
+    'Accountants': ["How many of your clients' records are sitting as attachments in staff inboxes right now?", 'CLIENTS A–Z · YEAR-END · PAYROLL · PRACTICE ADMIN'],
+    'Solicitors': ['Could you name, today, every former member of staff who can still open client files?', 'MATTERS · CLIENT ID & AML · PRECEDENTS · ADMIN'],
+    'Estate agents': ['If a landlord asked for their tenancy file right now, how many places would your team have to look?', 'LANDLORDS · PROPERTIES · TENANCIES · COMPLIANCE'],
+    'Dentists and clinics': ['When did someone last check that your patient record backup actually restores, not just that it runs?', 'CLINICAL SYSTEM · STAFF & CPD · CQC · SUPPLIERS'],
+    'Churches and charities': ["If your administrator was off tomorrow, could anyone else get into the email, website and giving accounts?", 'MEMBERS & SAFEGUARDING · ROTAS · GIVING · TRUSTEES'],
+    'Shops and services': ['How many customer details and bookings live in one person’s phone?', 'CUSTOMERS · BOOKINGS · SUPPLIERS · ACCOUNTS']
+  };
+  var box = document.getElementById('sector'), qt = document.getElementById('qtext'), qs = document.getElementById('qsmall');
+  var keys = Object.keys(Q);
+  function pick(k){
+    qt.textContent = Q[k][0]; qs.textContent = 'AFTER: ' + Q[k][1];
+    Array.prototype.forEach.call(box.children, function(b){ b.setAttribute('aria-pressed', String(b.textContent === k)); });
+  }
+  keys.forEach(function(k){ var b = document.createElement('button'); b.type = 'button'; b.textContent = k; b.addEventListener('click', function(){ pick(k); }); box.appendChild(b); });
+  var hint = (location.hash || '').slice(1).toLowerCase();
+  pick(keys.filter(function(k){ return hint && k.toLowerCase().indexOf(hint) === 0; })[0] || keys[0]);
+
+  // 60-second test
+  var t = document.getElementById('t'), msg = document.getElementById('msg'), go = document.getElementById('go'), start = 0, timer = null;
+  function fmt(s){ return ('0' + Math.floor(s / 60)).slice(-2) + ':' + ('0' + (s % 60)).slice(-2); }
+  go.addEventListener('click', function(){
+    if (!timer){
+      start = Date.now(); go.textContent = 'Found it'; msg.textContent = 'Go. Where would they look first?';
+      timer = setInterval(function(){ t.textContent = fmt(Math.floor((Date.now() - start) / 1000)); }, 250);
+    } else {
+      clearInterval(timer); timer = null;
+      var s = Math.floor((Date.now() - start) / 1000);
+      msg.textContent = s <= 60 ? 'Under a minute. You’re ahead of most.' : 'Over a minute. That’s the time a Health Check gives back.';
+      go.textContent = 'Try another';
+    }
+  });
+})();
+</script>
+</body>
+</html>

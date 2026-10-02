@@ -1,0 +1,72 @@
+name: Watchdog
+
+# Checks the live portfolio every 15 minutes. If a check fails, it opens an
+# issue (GitHub emails you); when the site is back, it closes the issue.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: watchdog
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check pages
+        id: pages
+        run: |
+          fail=""
+          check() {
+            url="$1"; marker="$2"
+            for attempt in 1 2 3; do
+              body=$(curl -sS -L --max-time 20 -w '\n%{http_code}' "$url?wd=$(date +%s)") || body=$'\n000'
+              code="${body##*$'\n'}"
+              if [ "$code" = "200" ] && grep -q "$marker" <<<"$body"; then echo "OK   $url"; return 0; fi
+              sleep 10
+            done
+            echo "FAIL $url (HTTP $code, marker '$marker')"
+            fail="$fail\n- $url returned HTTP $code or was missing \"$marker\""
+          }
+          check "https://adeadetayo6.github.io/" "WALLACE"
+          check "https://adeadetayo6.github.io/" "speakChunk"
+          check "https://adeadetayo6.github.io/" "translate.goog"
+          check "https://adeadetayo6.github.io/carnival/" "Carnival"
+          check "https://adeadetayo6.github.io/investor/" "Circle"
+          check "https://adeadetayo6.github.io/hire/Wallace_Adeleye_Portfolio_Preview.pdf" "PDF"
+          {
+            echo "failures<<EOF"
+            printf "%b\n" "$fail"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          [ -z "$fail" ]
+
+      - name: Open an issue when the site is down
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FAILS: ${{ steps.pages.outputs.failures }}
+        run: |
+          open=$(gh issue list -R "$GITHUB_REPOSITORY" --label watchdog --state open --json number -q '.[0].number')
+          msg=$(printf "Watchdog check failed at %s UTC.\n%s\n\nRun: %s/%s/actions/runs/%s" "$(date -u '+%d %b %H:%M')" "$FAILS" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          if [ -n "$open" ]; then gh issue comment "$open" -R "$GITHUB_REPOSITORY" --body "$msg";
+          else
+            gh label create watchdog -R "$GITHUB_REPOSITORY" --color B23A34 --description "Portfolio watchdog alerts" 2>/dev/null || true
+            gh issue create -R "$GITHUB_REPOSITORY" --label watchdog --title "Portfolio down or broken" --body "$msg"
+          fi
+
+      - name: Close the issue when the site is back
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for n in $(gh issue list -R "$GITHUB_REPOSITORY" --label watchdog --state open --json number -q '.[].number'); do
+            gh issue close "$n" -R "$GITHUB_REPOSITORY" --comment "Back up at $(date -u '+%d %b %H:%M') UTC."
+          done

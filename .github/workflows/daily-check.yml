@@ -1,0 +1,52 @@
+name: Daily check
+
+# Once a day: works out yesterday's uptime from the watchdog runs (alert below 95%),
+# and opens the portfolio in a real browser to test the language menu and Listen.
+on:
+  schedule:
+    - cron: "40 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  actions: read
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Uptime over the last 24 hours
+        id: uptime
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          since=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+          gh api -X GET "repos/$GITHUB_REPOSITORY/actions/workflows/watchdog.yml/runs" -f created=">=$since" -f per_page=100 \
+            -q '[.workflow_runs[] | select(.status=="completed") | .conclusion]' > runs.json
+          total=$(jq length runs.json); ok=$(jq '[.[] | select(.=="success")] | length' runs.json)
+          pct=$([ "$total" -gt 0 ] && echo $(( ok * 100 / total )) || echo 100)
+          echo "Uptime: $pct% ($ok of $total checks passed)" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "pct=$pct" >> "$GITHUB_OUTPUT"; echo "detail=$ok of $total checks passed" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Browser test
+        id: browser
+        run: |
+          npm init -y >/dev/null && npm i playwright@1.47.2 >/dev/null && npx playwright install --with-deps chromium >/dev/null
+          node tools/browser-check.js | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Alert
+        if: failure() || steps.uptime.outputs.pct < 95
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create watchdog -R "$GITHUB_REPOSITORY" --color B23A34 --description "Portfolio watchdog alerts" 2>/dev/null || true
+          gh issue create -R "$GITHUB_REPOSITORY" --label watchdog --title "Daily check: needs attention ($(date -u '+%d %b'))" \
+            --body "Uptime: ${{ steps.uptime.outputs.pct }}% (${{ steps.uptime.outputs.detail }}). Target: 95% or more. Browser test: ${{ steps.browser.outcome }}. Details: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"

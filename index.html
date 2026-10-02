@@ -515,11 +515,14 @@ body{top:0!important}
 
   /* ---------- language ---------- */
   var sel = $('lang');
-  function cookieLang(){
-    var m = document.cookie.match(/(?:^|;\s*)googtrans=\/[^\/;]*\/([^;]+)/);
+  var HOME = 'https://adeadetayo6.github.io', PROXY = 'https://adeadetayo6-github-io.translate.goog';
+  var onProxy = /\.translate\.goog$/.test(location.hostname);
+  var onSite = /(^|\.)adeadetayo6\.github\.io$/.test(location.hostname);
+  function urlLang(){
+    var m = location.search.match(/[?&]_x_tr_tl=([^&#]+)/);
     return m ? decodeURIComponent(m[1]) : 'en';
   }
-  var cur = cookieLang();
+  var cur = onProxy ? urlLang() : 'en';
   if (!sel.querySelector('option[value="' + cur + '"]')) cur = 'en';
   sel.value = cur;
   function bcp(c){ return ({iw:'he', jw:'jv', 'mni-Mtei':'mni', gom:'kok'})[c] || c; }
@@ -542,66 +545,35 @@ body{top:0!important}
   tick();
   setTimeout(function(){ tick(); setInterval(tick, 1000); }, 1000 - Date.now() % 1000);
 
-  /* ---------- translation (Google's page translator, driven by the menu) ---------- */
-  var gt = 'none', gtQueue = [];
-  function gtFail(){ gt = 'failed'; gtQueue = []; showLink(); }
-  function loadGT(cb){
-    if (gt === 'ready'){ cb(); return; }
-    if (gt === 'failed'){ showLink(); return; }
-    gtQueue.push(cb);
-    if (gt === 'loading') return;
-    gt = 'loading';
-    window.gteInit = function(){
-      try {
-        new google.translate.TranslateElement({pageLanguage:'en', autoDisplay:false}, 'gte');
-        gt = 'ready';
-        var q = gtQueue; gtQueue = []; q.forEach(function(f){ f(); });
-      } catch (e) { gtFail(); }
-    };
-    var s = document.createElement('script');
-    s.src = 'https://translate.google.com/translate_a/element.js?cb=gteInit';
-    s.onerror = gtFail;
-    document.head.appendChild(s);
-    setTimeout(function(){ if (gt === 'loading') gtFail(); }, 10000);
+  /* ---------- translation: open Google's translated copy of this page ---------- */
+  // The in-page translator script is blocked by some browsers (Brave, iPhone), so choosing a
+  // language opens Google's translated copy of the same page, which works everywhere.
+  // Choosing English from the translated copy comes back here.
+  (function clearOldCookie(){
+    var gone = 'googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+    document.cookie = gone;
+    if (location.hostname){ document.cookie = gone + ';domain=' + location.hostname; document.cookie = gone + ';domain=.' + location.hostname; }
+  })();
+  function proxyUrl(code, path){
+    return PROXY + (path || location.pathname) + '?_x_tr_sl=en&_x_tr_tl=' + encodeURIComponent(code) + '&_x_tr_hl=en' + location.hash;
   }
-  // Fallback when the translator can't load here: open Google's translated copy of the public page.
+  // Anywhere else (the private preview) the menu shows a link to the translated public page instead.
   function showLink(){
     var a = $('trlink');
     if (cur === 'en'){ a.hidden = true; return; }
-    var path = /github\.io$/.test(location.hostname) ? location.pathname : '/';
-    a.href = 'https://adeadetayo6-github-io.translate.goog' + path + '?_x_tr_sl=en&_x_tr_tl=' + encodeURIComponent(cur) + '&_x_tr_hl=en';
+    a.href = proxyUrl(cur, '/');
     a.hidden = false;
-  }
-  function setCombo(code, tries){
-    var c = document.querySelector('#gte select.goog-te-combo');
-    tries = tries || 0;
-    if (!c){ if (tries < 60) setTimeout(function(){ setCombo(code, tries + 1); }, 150); else gtFail(); return; }
-    c.value = code; c.dispatchEvent(new Event('change'));
-    setTimeout(function(){
-      var h = document.documentElement.classList;
-      if (!h.contains('translated-ltr') && !h.contains('translated-rtl')){ c.value = code; c.dispatchEvent(new Event('change')); }
-    }, 900);
-  }
-  function setCookie(v){
-    var tail = v ? '' : ';expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    var val = 'googtrans=' + (v || '') + tail + ';path=/';
-    document.cookie = val;
-    if (location.hostname){ document.cookie = val + ';domain=' + location.hostname; document.cookie = val + ';domain=.' + location.hostname; }
   }
   sel.addEventListener('change', function(){
     var v = sel.value;
     stopAudio();
-    cur = v; tick();
     if (v === 'en'){
-      setCookie('');
-      $('trlink').hidden = true;
-      if (gt === 'ready' || document.documentElement.classList.contains('translated-ltr') || document.documentElement.classList.contains('translated-rtl')) location.reload();
-      return;
+      if (onProxy){ location.href = HOME + location.pathname + location.hash; return; }
+      cur = 'en'; tick(); $('trlink').hidden = true; return;
     }
-    setCookie('/en/' + v);
-    loadGT(function(){ setCombo(v); });
+    if (onSite || onProxy){ status('Opening the ' + sel.options[sel.selectedIndex].text + ' version\u2026'); location.href = proxyUrl(v); return; }
+    cur = v; tick(); showLink();
   });
-  if (cur !== 'en') loadGT(function(){ setCombo(cur); });
 
   /* ---------- side rail ---------- */
   var side = $('side'), scrim = $('scrim'), menuBtn = $('menuBtn');
@@ -734,7 +706,7 @@ body{top:0!important}
   fillVoices();
   sel.addEventListener('change', fillVoices);
 
-  var P = {state:'idle', idx:0, ci:0, list:[], voice:null, useLang:'en', lang:'en', token:0, audio:null, filePos:0};
+  var P = {state:'idle', idx:0, ci:0, list:[], voice:null, useLang:'en', lang:'en', token:0, audio:null, filePos:0, u:null, cancelledAt:0, heard:false};
   function status(t){ $('lstatus').textContent = t || ''; }
   function navLabel(sec){
     var a = side.querySelector('a.item[data-sec="' + sec.id + '"]');
@@ -761,7 +733,8 @@ body{top:0!important}
   }
   function halt(){
     P.token++;
-    if (synth) synth.cancel();
+    // Only cancel when something is queued: on iPhone, cancel() straight before speak() swallows the speech.
+    if (synth && (synth.speaking || synth.pending)){ synth.cancel(); P.cancelledAt = Date.now(); }
     if (P.audio){ P.filePos = P.audio.currentTime; P.audio.pause(); }
   }
   function stopAudio(){
@@ -785,12 +758,16 @@ body{top:0!important}
   function speakChunk(){
     if (P.state !== 'playing') return;
     if (P.ci >= P.list.length){ next(); return; }
+    if (Date.now() - P.cancelledAt < 150){ var t0 = P.token; setTimeout(function(){ if (t0 === P.token) speakChunk(); }, 150); return; }
     var u = new SpeechSynthesisUtterance(P.list[P.ci]), token = P.token;
+    P.u = u; // keep a reference, or iPhone drops it before it finishes and the next line never starts
     u.lang = P.voice ? P.voice.lang : bcp(P.useLang);
     try { if (P.voice) u.voice = P.voice; } catch (e) {}
     u.rate = +rsel.value || 1;
+    u.onstart = function(){ P.heard = true; };
     u.onend = function(){ if (token !== P.token) return; P.ci++; speakChunk(); };
     u.onerror = function(e){ if (token !== P.token) return; if (e.error === 'interrupted' || e.error === 'canceled') return; P.ci++; speakChunk(); };
+    if (synth.paused) synth.resume();
     synth.speak(u);
   }
   function playFile(sec){
@@ -810,7 +787,14 @@ body{top:0!important}
     if (!synth && !Object.keys(VOICE).length){ status('This browser can’t read aloud.'); return; }
     P.lang = cur;
     var start = Math.max(0, SECS.map(function(s){ return s.id; }).indexOf(current));
+    P.heard = false;
     jumpTo(start, false);
+    // If nothing has started after a few seconds, say why rather than sitting silent.
+    setTimeout(function(){
+      if (P.state === 'playing' && !P.heard && !(P.audio && !P.audio.paused)){
+        status('No sound? Turn off silent mode (the switch on the side of an iPhone) and turn the volume up, then press Listen again.');
+      }
+    }, 3500);
   }
   each(document.querySelectorAll('[data-listen]'), function(b){ b.addEventListener('click', toggle); });
   $('lstop').addEventListener('click', stopAudio);

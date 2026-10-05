@@ -224,6 +224,14 @@ iframe.skiptranslate,.goog-te-banner-frame,#goog-gt-tt,.goog-te-balloon-frame,.V
 body{top:0!important}
 .goog-text-highlight{background:none!important;box-shadow:none!important}
 #gte{display:none}
+
+/* Wallace's own voice on the cover */
+.me{margin:22px auto 0;display:grid;gap:12px;max-width:58ch;justify-items:center;text-align:center}
+.me-play{justify-self:center;display:inline-flex;align-items:center;gap:10px;border:0;cursor:pointer;background:var(--ink);color:var(--cream);padding:11px 16px 11px 12px;font:800 13px/1 var(--display);letter-spacing:.12em;text-transform:uppercase}
+.me-play:focus-visible{outline:3px solid var(--rust-ink);outline-offset:3px}
+.me-i{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--ink);font-size:11px;letter-spacing:0}
+.me-t{font-weight:600;opacity:.75;letter-spacing:.06em}
+.me figcaption{font:italic 400 15px/1.55 var(--display);color:var(--ink-2)}
 </style>
 </head>
 <body>
@@ -274,6 +282,11 @@ body{top:0!important}
     <div class="rule" aria-hidden="true"></div>
     <p class="role">Business operations &middot; Analytics &middot; Automation</p>
     <p class="prep">Six things I built. Three of them you can try for yourself.</p>
+    <figure class="me" data-noread>
+      <button type="button" class="me-play" id="mePlay" aria-describedby="meText"><span class="me-i" aria-hidden="true">&#9654;</span><span class="me-l">Hear it from me</span><span class="me-t">0:29</span></button>
+      <audio id="meAudio" preload="none" src="audio/intro_wallace.mp3"></audio>
+      <figcaption id="meText">&ldquo;I work alongside business owners and employers. I build systems, I work in data analytics, and I&rsquo;ve got a finance background too. I build systems and tools that don&rsquo;t just automate: they simplify the processes a business runs on, whether that&rsquo;s compliance, research, analytics or visualisation. I&rsquo;ve built all of that.&rdquo;</figcaption>
+    </figure>
     <ol class="index" aria-label="Contents">
       <li><a href="#ford"><span class="n">02</span><span class="t">Ford, in numbers</span><span class="d">Where it started</span></a></li>
       <li><a href="#model"><span class="n">03</span><span class="t">The deal model</span><span class="d">Financial modelling</span></a></li>
@@ -616,13 +629,24 @@ body{top:0!important}
   markNav();
 
   /* ---------- listen: the page read aloud, section by section ---------- */
-  // Wallace's recorded voice goes here, one file per section, e.g. top:'audio/top.mp3'.
-  // Sections with a file play the recording (English); the rest use the device's voice.
-  var VOICE = {};
+  // Wallace's recorded voice, one file per section. Sections with a file play the
+  // recording (English); the rest use the device's voice. Cover: his own 29-second intro.
+  var VOICE = { top: 'audio/intro_wallace.mp3' };
+
+  // Say amounts the way a person would: "£3M+" as "over 3 million pounds", not "pound 3 M".
+  function speakable(t){
+    return t
+      .replace(/£\s?(\d+(?:\.\d+)?)\s?([MmKkBb])\b\s?(\+)?/g, function(_, n, u, plus){
+        return (plus ? 'over ' : '') + n + ' ' + ({m:'million', k:'thousand', b:'billion'})[u.toLowerCase()] + ' pounds'; })
+      .replace(/£\s?(\d[\d,]*(?:\.\d+)?)(\+)?/g, function(_, n, plus){ return (plus ? 'over ' : '') + n + ' pounds'; })
+      .replace(/(\d+)\+\s?YRS\b/gi, 'over $1 years')
+      .replace(/\bBI\s?\+\s?VBA\b/g, 'B.I. and V.B.A.')
+      .replace(/\s\+\s/g, ' and ');
+  }
 
   var READ = 'h1,h2,h3,p,li,.stat,.node,.kicker,figcaption';
   function clean(t){
-    return t.replace(/[·•]/g, ',').replace(/[←-⇿↗#]/g, ' ').replace(/\s+/g, ' ').replace(/\s+([.,;:!?])/g, '$1').replace(/,\s*,/g, ',').trim();
+    return speakable(t).replace(/[·•]/g, ',').replace(/[←-⇿↗#]/g, ' ').replace(/\s+/g, ' ').replace(/\s+([.,;:!?])/g, '$1').replace(/,\s*,/g, ',').trim();
   }
   function textOf(el){
     var out = '';
@@ -800,6 +824,20 @@ body{top:0!important}
   $('lstop').addEventListener('click', stopAudio);
   $('lnext').addEventListener('click', function(){ if (P.idx < SECS.length - 1) jumpTo(P.idx + 1, true); else stopAudio(); });
   setButtons();
+})();
+
+/* cover: Wallace's own voice */
+(function(){
+  var b=document.getElementById('mePlay'), au=document.getElementById('meAudio');
+  if(!b||!au) return;
+  var icon=b.querySelector('.me-i'), lab=b.querySelector('.me-l');
+  function set(p){ icon.innerHTML=p?'&#10073;&#10073;':'&#9654;'; lab.textContent=p?'Playing':'Hear it from me'; }
+  b.addEventListener('click',function(){
+    if(au.paused){ try{ if(window.speechSynthesis) window.speechSynthesis.cancel(); }catch(e){} var pr=au.play(); if(pr&&pr.catch) pr.catch(function(){ set(false); }); set(true); }
+    else { au.pause(); set(false); }
+  });
+  au.addEventListener('ended',function(){ set(false); au.currentTime=0; });
+  au.addEventListener('pause',function(){ set(false); });
 })();
 </script>
 

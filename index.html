@@ -189,9 +189,9 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 .side-pill[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
 .side-row{display:flex;gap:8px;margin:12px 4px 0}
 .side-row button{flex:1;border:1.5px solid var(--ink);border-radius:999px;padding:8px 10px;background:transparent;color:var(--ink);font:700 12.5px/1 var(--display);cursor:pointer}
-.side-opts{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:10px;margin:12px 4px 0}
-.side-opts label{display:grid;gap:4px;font:700 10.5px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);min-width:0}
-.side-opts select{font:500 13px/1.2 var(--display);color:var(--ink);background:var(--cream-2);border:1px solid #CFC5AC;border-radius:8px;padding:7px 6px;min-width:0;width:100%}
+.side-opts{margin:10px 4px 0}
+.side-opts label{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-left:12px;font:700 10.5px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.side-opts select{font:500 13px/1.2 var(--display);color:var(--ink);background:var(--cream-2);border:1px solid #CFC5AC;border-radius:8px;padding:7px 6px;width:92px}
 .side-status{min-height:1.3em;margin:12px 8px 0;font:400 16px/1.2 var(--pixel);color:var(--ink-2);letter-spacing:.03em}
 .side-label{margin:22px 10px 6px;font:700 11px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
 .side a.quick{display:block;align-self:flex-start;padding:8px 10px;border-radius:10px;font:600 13.5px/1.3 var(--display);text-decoration:none;color:var(--ink)}
@@ -215,8 +215,12 @@ input[type=range]::-moz-range-thumb{width:18px;height:24px;background:var(--gold
 .fab .dot{width:8px;height:8px;border-radius:50%;background:#C9573F;display:none;animation:blink 1s steps(1) infinite}
 .fab.playing .dot{display:inline-block}
 
-@media (max-width:700px){ .tt .left span.pf{display:none} .tt{font-size:19px} .tt button,.tt select{font-size:19px} .tt select{max-width:120px} }
-@media (max-width:440px){ .tt .left span.p100{display:none} }
+@media (max-width:1000px){ .tt .left span.pf{display:none} }
+@media (max-width:790px){ .tt{font-size:19px} .tt button,.tt select{font-size:19px} .tt select{max-width:120px} }
+/* the top strip stays on one row: the date, then the name, then the clock give way as the screen narrows */
+@media (max-width:690px){ #clock .cd{display:none} }
+@media (max-width:560px){ .tt .left{display:none} .tt .right{gap:6px 10px} }
+@media (max-width:350px){ #clock{display:none} }
 @media (prefers-reduced-motion:reduce){.side,.fab,.fab .bars i,.fab .now{transition:none}.fab .dot{animation:none}}
 
 /* Google's translate bar stays hidden: the language menu above drives it */
@@ -225,13 +229,6 @@ body{top:0!important}
 .goog-text-highlight{background:none!important;box-shadow:none!important}
 #gte{display:none}
 
-/* Wallace's own voice on the cover */
-.me{margin:22px auto 0;display:grid;gap:12px;max-width:58ch;justify-items:center;text-align:center}
-.me-play{justify-self:center;display:inline-flex;align-items:center;gap:10px;border:0;cursor:pointer;background:var(--ink);color:var(--cream);padding:11px 16px 11px 12px;font:800 13px/1 var(--display);letter-spacing:.12em;text-transform:uppercase}
-.me-play:focus-visible{outline:3px solid var(--rust-ink);outline-offset:3px}
-.me-i{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--ink);font-size:11px;letter-spacing:0}
-.me-t{font-weight:600;opacity:.75;letter-spacing:.06em}
-.me figcaption{font:italic 400 15px/1.55 var(--display);color:var(--ink-2)}
 </style>
 </head>
 <body>
@@ -248,9 +245,8 @@ body{top:0!important}
   <a class="item" href="#carnival" data-sec="carnival"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><span>Carnival map</span><span class="num">08</span></a>
   <a class="item" href="#investor" data-sec="investor"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M16 6.5h5M18.5 4v5"/></svg><span>Investor sign-up</span><span class="num">09</span></a>
   <a class="item" href="#how" data-sec="how"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 7.5l9 6 9-6"/></svg><span>How I work</span><span class="num">10</span></a>
-  <button class="side-pill" type="button" data-listen aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg><span class="lbl">Listen to this page</span></button>
+  <button class="side-pill" type="button" data-listen aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg><span class="lbl">Listen in my voice</span></button>
   <div class="side-opts">
-    <label>Voice<select id="vsel" class="notranslate"><option value="">Automatic</option></select></label>
     <label>Speed<select id="rsel" class="notranslate"><option value="0.75">0.75&times;</option><option value="1" selected>1&times;</option><option value="1.25">1.25&times;</option><option value="1.5">1.5&times;</option><option value="2">2&times;</option></select></label>
   </div>
   <div class="side-row" id="lctl" hidden><button type="button" id="lstop">Stop</button><button type="button" id="lnext">Next case</button></div>
@@ -282,11 +278,6 @@ body{top:0!important}
     <div class="rule" aria-hidden="true"></div>
     <p class="role">Business operations &middot; Analytics &middot; Automation</p>
     <p class="prep">Six things I built. Three of them you can try for yourself.</p>
-    <figure class="me" data-noread>
-      <button type="button" class="me-play" id="mePlay" aria-describedby="meText"><span class="me-i" aria-hidden="true">&#9654;</span><span class="me-l">Hear it from me</span><span class="me-t">0:29</span></button>
-      <audio id="meAudio" preload="none" src="audio/intro_wallace.mp3"></audio>
-      <figcaption id="meText">&ldquo;I work alongside business owners and employers. I build systems, I work in data analytics, and I&rsquo;ve got a finance background too. I build systems and tools that don&rsquo;t just automate: they simplify the processes a business runs on, whether that&rsquo;s compliance, research, analytics or visualisation. I&rsquo;ve built all of that.&rdquo;</figcaption>
-    </figure>
     <ol class="index" aria-label="Contents">
       <li><a href="#ford"><span class="n">02</span><span class="t">Ford, in numbers</span><span class="d">Where it started</span></a></li>
       <li><a href="#model"><span class="n">03</span><span class="t">The deal model</span><span class="d">Financial modelling</span></a></li>
@@ -551,9 +542,13 @@ body{top:0!important}
       return (f({weekday:'short'}) + ' ' + f({day:'2-digit'}) + ' ' + f({month:'short'})).replace(/\./g, '').toLocaleUpperCase(L);
     } catch (e) { return EN_D[d.getDay()] + ' ' + pad(d.getDate()) + ' ' + EN_M[d.getMonth()]; }
   }
+  var clockD = document.createElement('span'), clockT = document.createElement('span');
+  clockD.className = 'cd';
+  $('clock').textContent = ''; $('clock').appendChild(clockD); $('clock').appendChild(clockT);
   function tick(){
     var d = new Date();
-    $('clock').textContent = dateLabel(d) + ' ' + pad(d.getHours()) + (d.getSeconds() % 2 ? ' ' : ':') + pad(d.getMinutes());
+    clockD.textContent = dateLabel(d) + ' ';
+    clockT.textContent = pad(d.getHours()) + (d.getSeconds() % 2 ? ' ' : ':') + pad(d.getMinutes());
   }
   tick();
   setTimeout(function(){ tick(); setInterval(tick, 1000); }, 1000 - Date.now() % 1000);
@@ -612,8 +607,8 @@ body{top:0!important}
   each(side.querySelectorAll('a[href^="#"]'), function(a){
     a.addEventListener('click', function(){
       openSide(false);
-      var id = a.getAttribute('href').slice(1), i = SECS.map(function(s){ return s.id; }).indexOf(id);
-      if (P.state === 'playing' && i >= 0) jumpTo(i, false);
+      var k = clipAt(a.getAttribute('href').slice(1));
+      if (P.state === 'playing' && k >= 0 && k !== P.i) jumpTo(k, false);
     });
   });
   var current = 'top';
@@ -628,125 +623,53 @@ body{top:0!important}
   }
   markNav();
 
-  /* ---------- listen: the page read aloud, section by section ---------- */
-  // Wallace's recorded voice, one file per section. Sections with a file play the
-  // recording (English); the rest use the device's voice. Cover: his own 29-second intro.
-  var VOICE = { top: 'audio/intro_wallace.mp3' };
-
-  // Say amounts the way a person would: "£3M+" as "over 3 million pounds", not "pound 3 M".
-  function speakable(t){
-    return t
-      .replace(/£\s?(\d+(?:\.\d+)?)\s?([MmKkBb])\b\s?(\+)?/g, function(_, n, u, plus){
-        return (plus ? 'over ' : '') + n + ' ' + ({m:'million', k:'thousand', b:'billion'})[u.toLowerCase()] + ' pounds'; })
-      .replace(/£\s?(\d[\d,]*(?:\.\d+)?)(\+)?/g, function(_, n, plus){ return (plus ? 'over ' : '') + n + ' pounds'; })
-      .replace(/(\d+)\+\s?YRS\b/gi, 'over $1 years')
-      .replace(/\bBI\s?\+\s?VBA\b/g, 'B.I. and V.B.A.')
-      .replace(/\s\+\s/g, ' and ');
-  }
-
-  var READ = 'h1,h2,h3,p,li,.stat,.node,.kicker,figcaption';
-  function clean(t){
-    return speakable(t).replace(/[·•]/g, ',').replace(/[←-⇿↗#]/g, ' ').replace(/\s+/g, ' ').replace(/\s+([.,;:!?])/g, '$1').replace(/,\s*,/g, ',').trim();
-  }
-  function textOf(el){
-    var out = '';
-    (function walk(n){
-      for (var c = n.firstChild; c; c = c.nextSibling){
-        if (c.nodeType === 3) out += c.data;
-        else if (c.nodeType === 1){
-          if (c.getAttribute('aria-hidden') === 'true' || c.tagName === 'SCRIPT' || c.tagName === 'STYLE') continue;
-          if (c.tagName === 'BR'){ out += ' '; continue; }
-          walk(c); out += ' ';
-        }
-      }
-    })(el);
-    return clean(out);
-  }
-  function lines(sec){
-    var res = [];
-    each(sec.querySelectorAll(READ), function(el){
-      if (el.closest('[data-noread],[aria-hidden="true"],.index,.tools,.contact,.cta,.count')) return;
-      var parent = el.parentElement && el.parentElement.closest(READ);
-      if (parent && sec.contains(parent)) return;
-      var t = el.classList.contains('stat') ? textOf(el.querySelector('b')) + ', ' + textOf(el.querySelector('span')) : textOf(el);
-      if (t) res.push(/[.!?:]$/.test(t) ? t : t + '.');
-    });
-    return res;
-  }
-  function chunks(arr){
-    var out = [];
-    arr.forEach(function(t){
-      (t.match(/[^.!?]+(?:[.!?]+["\u201d\u2019)]*)?/g) || [t]).forEach(function(s){
-        s = s.trim();
-        while (s.length > 220){ var i = s.lastIndexOf(' ', 220); if (i < 60) i = 220; out.push(s.slice(0, i)); s = s.slice(i + 1); }
-        if (s && /[0-9A-Za-z\u00c0-\uffff]/.test(s.replace(/[\u2018-\u201f]/g, ''))) out.push(s);
-      });
-    });
-    return out;
-  }
-  var EN = {};
-  SECS.forEach(function(s){ EN[s.id] = chunks(lines(s)); });
-
-  var synth = window.speechSynthesis, voices = [];
-  function loadVoices(){ voices = synth ? synth.getVoices() : []; }
-  if (synth){ loadVoices(); if ('onvoiceschanged' in synth) synth.onvoiceschanged = loadVoices; }
-  function pickVoice(code){
-    var L = bcp(code).toLowerCase();
-    var c = voices.filter(function(v){ return v.lang.toLowerCase().replace('_', '-').indexOf(L) === 0; });
-    if (!c.length) return null;
-    if (L === 'en'){ var gb = c.filter(function(v){ return /en-gb/i.test(v.lang.replace('_', '-')); }); if (gb.length) c = gb; }
-    var good = c.filter(function(v){ return /natural|neural|google|premium|enhanced/i.test(v.name); });
-    return good[0] || c[0];
-  }
+  /* ---------- listen: Wallace's recorded voice, and nothing else ---------- */
+  // Listen plays recordings of Wallace only, never a device voice. Clips are listed per language
+  // and per section; sections without a clip are skipped. English is his own voice; any other
+  // language is an AI translation of it and is labelled that way. A language with no clips plays
+  // the English ones. Today there is one clip: his 29-second intro, on the cover.
+  var VOICE = {
+    en: { top: 'audio/intro_wallace.mp3' }
+  };
+  // Google's translated copy can't serve the files, so there they come from the real site.
+  function fileUrl(path){ return onProxy ? HOME + '/' + path : path; }
 
   function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
-  var vsel = $('vsel'), rsel = $('rsel');
+  var rsel = $('rsel');
   var savedRate = store('pf.rate');
   if (savedRate && rsel.querySelector('option[value="' + savedRate + '"]')) rsel.value = savedRate;
-  function langVoices(code){
-    var L = bcp(code).toLowerCase().split('-')[0];
-    return voices.filter(function(v){ return v.lang.toLowerCase().replace('_', '-').split('-')[0] === L; });
-  }
-  function fillVoices(){
-    var want = vsel.value || store('pf.voice') || '';
-    var list = langVoices(cur);
-    if (!list.length) list = langVoices('en');
-    vsel.innerHTML = '<option value="">Automatic</option>' + list.map(function(v){
-      return '<option value="' + v.name.replace(/"/g, '&quot;') + '">' + v.name.replace(/</g, '&lt;') + ' (' + v.lang.replace('_', '-') + ')</option>';
-    }).join('');
-    vsel.value = list.some(function(v){ return v.name === want; }) ? want : '';
-    vsel.disabled = !list.length;
-  }
-  function chosenVoice(code){
-    var name = vsel.value;
-    if (!name) return pickVoice(code);
-    var v = langVoices(code).filter(function(x){ return x.name === name; })[0];
-    return v || pickVoice(code);
-  }
-  function restartChunk(){ if (P.state === 'playing'){ halt(); speakSection(false); } }
-  vsel.addEventListener('change', function(){ store('pf.voice', vsel.value); restartChunk(); });
-  rsel.addEventListener('change', function(){ store('pf.rate', rsel.value); if (P.audio) P.audio.playbackRate = +rsel.value; restartChunk(); });
-  if (synth && 'onvoiceschanged' in synth) synth.onvoiceschanged = function(){ loadVoices(); fillVoices(); };
-  fillVoices();
-  sel.addEventListener('change', fillVoices);
+  function rate(){ return +rsel.value || 1; }
+  rsel.addEventListener('change', function(){
+    store('pf.rate', rsel.value);
+    if (P.audio){ P.audio.defaultPlaybackRate = rate(); P.audio.playbackRate = rate(); }
+  });
 
-  var P = {state:'idle', idx:0, ci:0, list:[], voice:null, useLang:'en', lang:'en', token:0, audio:null, filePos:0, u:null, cancelledAt:0, heard:false};
+  var P = {state:'idle', i:0, list:[], lang:'en', token:0, audio:null, pos:0, heard:false};
+  // The clips to play, in page order: the page's language if it has any, otherwise English.
+  function playlist(code){
+    P.lang = VOICE[code] && Object.keys(VOICE[code]).length ? code : 'en';
+    var set = VOICE[P.lang];
+    return SECS.filter(function(s){ return set[s.id]; }).map(function(s){ return {sec:s, file:set[s.id]}; });
+  }
+  function clipAt(id){ return P.list.map(function(c){ return c.sec.id; }).indexOf(id); }
   function status(t){ $('lstatus').textContent = t || ''; }
   function navLabel(sec){
     var a = side.querySelector('a.item[data-sec="' + sec.id + '"]');
     return a ? a.querySelector('.num').textContent + ' · ' + a.querySelector('span').textContent : '';
   }
+  function whose(){ return P.lang !== 'en' ? 'my voice, AI-translated' : cur !== 'en' ? 'my voice, in English' : 'my voice'; }
   function setButtons(){
     each(document.querySelectorAll('[data-listen]'), function(b){
       var strip = b.classList.contains('listen');
       b.setAttribute('aria-pressed', String(P.state === 'playing'));
       b.querySelector('.lbl').textContent = P.state === 'playing' ? (strip ? '❚❚ PAUSE' : 'Pause')
-        : P.state === 'paused' ? (strip ? '▶ RESUME' : 'Resume') : (strip ? '▶ LISTEN' : 'Listen to this page');
+        : P.state === 'paused' ? (strip ? '▶ RESUME' : 'Resume') : (strip ? '▶ LISTEN' : 'Listen in my voice');
     });
     $('lctl').hidden = P.state === 'idle';
+    $('lnext').hidden = P.list.length < 2;
     menuBtn.classList.toggle('playing', P.state === 'playing');
-    var sec = SECS[P.idx];
-    $('fabNow').textContent = P.state === 'playing' && sec ? '\u00b7 ' + (side.querySelector('a.item[data-sec="' + sec.id + '"] .num') || {textContent:''}).textContent : '';
+    var c = P.list[P.i];
+    $('fabNow').textContent = P.state === 'playing' && c ? '· ' + (side.querySelector('a.item[data-sec="' + c.sec.id + '"] .num') || {textContent:''}).textContent : '';
   }
   function markReading(sec, scroll){
     each(document.querySelectorAll('.panel.reading,.side a.item.reading'), function(el){ el.classList.remove('reading'); });
@@ -757,87 +680,55 @@ body{top:0!important}
   }
   function halt(){
     P.token++;
-    // Only cancel when something is queued: on iPhone, cancel() straight before speak() swallows the speech.
-    if (synth && (synth.speaking || synth.pending)){ synth.cancel(); P.cancelledAt = Date.now(); }
-    if (P.audio){ P.filePos = P.audio.currentTime; P.audio.pause(); }
+    if (P.audio){ P.pos = P.audio.currentTime; P.audio.pause(); }
   }
   function stopAudio(){
-    halt(); P.state = 'idle'; P.ci = 0; P.filePos = 0;
+    halt(); P.state = 'idle'; P.pos = 0;
     markReading(null); setButtons(); status('');
   }
-  function speakSection(scroll){
+  function play(scroll){
     if (P.state !== 'playing') return;
-    if (P.idx >= SECS.length){ stopAudio(); status('Finished. Thanks for listening.'); return; }
-    var sec = SECS[P.idx];
-    markReading(sec, scroll);
+    if (P.i >= P.list.length){ stopAudio(); status('Finished. Thanks for listening.'); return; }
+    var c = P.list[P.i], token = P.token;
+    markReading(c.sec, scroll);
     setButtons();
-    if (P.lang === 'en' && VOICE[sec.id]){ status(navLabel(sec) + ' · my voice'); playFile(sec); return; }
-    if (!synth){ status('This browser can’t read aloud.'); stopAudio(); return; }
-    var v = chosenVoice(P.lang);
-    if (v || P.lang === 'en'){ P.voice = v; P.useLang = P.lang; P.list = P.lang === 'en' ? EN[sec.id] : chunks(lines(sec)); status(navLabel(sec)); }
-    else { P.voice = chosenVoice('en'); P.useLang = 'en'; P.list = EN[sec.id]; status('No voice for this language on this device, so reading in English. ' + navLabel(sec)); }
-    speakChunk();
-  }
-  function next(){ P.idx++; P.ci = 0; P.filePos = 0; speakSection(true); }
-  function speakChunk(){
-    if (P.state !== 'playing') return;
-    if (P.ci >= P.list.length){ next(); return; }
-    if (Date.now() - P.cancelledAt < 150){ var t0 = P.token; setTimeout(function(){ if (t0 === P.token) speakChunk(); }, 150); return; }
-    var u = new SpeechSynthesisUtterance(P.list[P.ci]), token = P.token;
-    P.u = u; // keep a reference, or iPhone drops it before it finishes and the next line never starts
-    u.lang = P.voice ? P.voice.lang : bcp(P.useLang);
-    try { if (P.voice) u.voice = P.voice; } catch (e) {}
-    u.rate = +rsel.value || 1;
-    u.onstart = function(){ P.heard = true; };
-    u.onend = function(){ if (token !== P.token) return; P.ci++; speakChunk(); };
-    u.onerror = function(e){ if (token !== P.token) return; if (e.error === 'interrupted' || e.error === 'canceled') return; P.ci++; speakChunk(); };
-    if (synth.paused) synth.resume();
-    synth.speak(u);
-  }
-  function playFile(sec){
+    status(navLabel(c.sec) + ' · ' + whose());
     if (!P.audio) P.audio = new Audio();
-    var a = P.audio, token = P.token;
-    if (a.dataset.sec !== sec.id){ a.src = VOICE[sec.id]; a.dataset.sec = sec.id; P.filePos = 0; }
+    var a = P.audio;
+    if (a.dataset.file !== c.file){ a.src = fileUrl(c.file); a.dataset.file = c.file; P.pos = 0; }
+    a.onplaying = function(){ if (token === P.token){ P.heard = true; status(navLabel(c.sec) + ' · ' + whose()); } };
     a.onended = function(){ if (token === P.token) next(); };
-    a.onerror = function(){ if (token !== P.token) return; delete VOICE[sec.id]; speakSection(false); };
-    try { a.currentTime = P.filePos; } catch (e) {}
-    a.playbackRate = +rsel.value || 1;
-    var pr = a.play(); if (pr && pr.catch) pr.catch(function(){ if (token === P.token){ delete VOICE[sec.id]; speakSection(false); } });
+    a.onerror = function(){ if (token !== P.token) return; stopAudio(); status('The recording didn’t load. Check your connection, then press Listen again.'); };
+    // Seek only when needed: a paused clip resumes where it stopped; a fresh start goes back to 0:00.
+    if (Math.abs(a.currentTime - P.pos) > 0.25){ try { a.currentTime = P.pos; } catch (e) {} }
+    a.defaultPlaybackRate = a.playbackRate = rate();
+    var pr = a.play();
+    if (pr && pr.catch) pr.catch(function(e){
+      if (token !== P.token || (e && e.name === 'AbortError')) return;
+      stopAudio(); status('The recording couldn’t start. Press Listen again.');
+    });
   }
-  function jumpTo(i, scroll){ halt(); P.state = 'playing'; P.idx = i; P.ci = 0; P.filePos = 0; setButtons(); speakSection(scroll); }
+  function next(){ P.i++; P.pos = 0; play(true); }
+  function jumpTo(i, scroll){ halt(); P.state = 'playing'; P.i = i; P.pos = 0; play(scroll); }
   function toggle(){
-    if (P.state === 'playing'){ halt(); P.state = 'paused'; setButtons(); status('Paused · ' + navLabel(SECS[P.idx])); return; }
-    if (P.state === 'paused'){ P.state = 'playing'; setButtons(); speakSection(false); return; }
-    if (!synth && !Object.keys(VOICE).length){ status('This browser can’t read aloud.'); return; }
-    P.lang = cur;
-    var start = Math.max(0, SECS.map(function(s){ return s.id; }).indexOf(current));
+    if (P.state === 'playing'){ halt(); P.state = 'paused'; setButtons(); status('Paused · ' + navLabel(P.list[P.i].sec)); return; }
+    if (P.state === 'paused'){ P.state = 'playing'; play(false); return; }
+    P.list = playlist(cur);
+    if (!P.list.length) return;
+    // Start with the clip for the section on screen, or the next one down; past the last, from the top.
+    var here = SECS.map(function(s){ return s.id; }).indexOf(current), start = 0;
+    for (var k = 0; k < P.list.length; k++) if (SECS.indexOf(P.list[k].sec) >= here){ start = k; break; }
     P.heard = false;
     jumpTo(start, false);
-    // If nothing has started after a few seconds, say why rather than sitting silent.
+    // On a slow connection, say so rather than sitting silent.
     setTimeout(function(){
-      if (P.state === 'playing' && !P.heard && !(P.audio && !P.audio.paused)){
-        status('No sound? Turn off silent mode (the switch on the side of an iPhone) and turn the volume up, then press Listen again.');
-      }
-    }, 3500);
+      if (P.state === 'playing' && !P.heard) status('Loading the recording… If nothing plays, check your connection and volume, then press Listen again.');
+    }, 4000);
   }
   each(document.querySelectorAll('[data-listen]'), function(b){ b.addEventListener('click', toggle); });
   $('lstop').addEventListener('click', stopAudio);
-  $('lnext').addEventListener('click', function(){ if (P.idx < SECS.length - 1) jumpTo(P.idx + 1, true); else stopAudio(); });
+  $('lnext').addEventListener('click', function(){ if (P.i < P.list.length - 1) jumpTo(P.i + 1, true); else stopAudio(); });
   setButtons();
-})();
-
-/* cover: Wallace's own voice */
-(function(){
-  var b=document.getElementById('mePlay'), au=document.getElementById('meAudio');
-  if(!b||!au) return;
-  var icon=b.querySelector('.me-i'), lab=b.querySelector('.me-l');
-  function set(p){ icon.innerHTML=p?'&#10073;&#10073;':'&#9654;'; lab.textContent=p?'Playing':'Hear it from me'; }
-  b.addEventListener('click',function(){
-    if(au.paused){ try{ if(window.speechSynthesis) window.speechSynthesis.cancel(); }catch(e){} var pr=au.play(); if(pr&&pr.catch) pr.catch(function(){ set(false); }); set(true); }
-    else { au.pause(); set(false); }
-  });
-  au.addEventListener('ended',function(){ set(false); au.currentTime=0; });
-  au.addEventListener('pause',function(){ set(false); });
 })();
 </script>
 

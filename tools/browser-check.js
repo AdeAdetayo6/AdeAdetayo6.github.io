@@ -1,5 +1,6 @@
 // Daily browser test of the live portfolio: page loads without script errors, the language
-// menu sends you to the translated copy, and Listen starts speaking.
+// menu sends you to the translated copy, and Listen plays Wallace's own recording (never a
+// computer voice).
 const { chromium } = require('playwright');
 (async () => {
   const browser = await chromium.launch();
@@ -8,11 +9,11 @@ const { chromium } = require('playwright');
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await page.addInitScript(() => {
-    window.__spoken = [];
-    const s = { speaking: false, pending: false, paused: false, getVoices: () => [], cancel() {}, resume() {},
-      speak(u) { window.__spoken.push(u.text); setTimeout(() => { u.onstart && u.onstart(); u.onend && u.onend(); }, 20); } };
+    window.__spoken = 0; window.__played = [];
+    const s = { speaking: false, pending: false, paused: false, getVoices: () => [], cancel() {}, resume() {}, speak() { window.__spoken++; } };
     Object.defineProperty(window, 'speechSynthesis', { value: s });
-    window.SpeechSynthesisUtterance = function (t) { this.text = t; };
+    const play = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function () { window.__played.push(this.src); return play.call(this); };
   });
   let translated = null;
   await ctx.route(/translate\.goog/, r => { translated = r.request().url(); r.fulfill({ contentType: 'text/html', body: 'ok' }); });
@@ -22,8 +23,13 @@ const { chromium } = require('playwright');
   results.push(['Page loads without script errors', errors.length === 0, errors.join('; ')]);
   await page.click('.tt .listen');
   await page.waitForTimeout(1500);
-  const spoken = await page.evaluate(() => window.__spoken.length);
-  results.push(['Listen starts speaking', spoken > 0, spoken + ' lines spoken']);
+  const { played, spoken } = await page.evaluate(() => ({ played: window.__played, spoken: window.__spoken }));
+  const clip = played.find(u => /\/audio\/intro_wallace\.mp3$/.test(u));
+  results.push(["Listen plays Wallace's recording", !!clip, played.join(', ') || 'nothing played']);
+  results.push(['No computer voice', spoken === 0, spoken + ' lines spoken']);
+  const res = clip ? await ctx.request.get(clip) : null;
+  const type = res ? res.headers()['content-type'] || '' : '';
+  results.push(['The recording is online', !!res && res.ok() && /audio/.test(type), res ? res.status() + ' ' + type : 'no file']);
   await page.click('.tt .listen');
   await page.selectOption('#lang', 'de');
   await page.waitForTimeout(2000);

@@ -36,7 +36,7 @@ jobs:
             fail="$fail\n- $url returned HTTP $code or was missing \"$marker\""
           }
           check "https://adeadetayo6.github.io/" "WALLACE"
-          check "https://adeadetayo6.github.io/" "speakChunk"
+          check "https://adeadetayo6.github.io/" "intro_wallace.mp3"
           check "https://adeadetayo6.github.io/" "translate.goog"
           check "https://adeadetayo6.github.io/carnival/" "Carnival"
           check "https://adeadetayo6.github.io/investor/" "Circle"
